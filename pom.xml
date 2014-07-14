@@ -13,10 +13,46 @@
 
     <properties>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+        <glassfish.home>${env.GLASSFISH_HOME}</glassfish.home>
+        <glassfish.domain.name>${project.artifactId}</glassfish.domain.name>
+        <glassfish.domain.dir>${basedir}/domain</glassfish.domain.dir>
+        <glassfish.domain.admin-user>admin</glassfish.domain.admin-user>
+        <glassfish.domain.admin-password>adminadmin</glassfish.domain.admin-password>
+        <glassfish.domain.admin-port>4848</glassfish.domain.admin-port>
+        <glassfish.domain.http-port>8080</glassfish.domain.http-port>
+        <glassfish.domain.https-port>8443</glassfish.domain.https-port>
     </properties>
 
     <build>
         <finalName>cloud-print-console</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.glassfish.maven.plugin</groupId>
+                <artifactId>maven-glassfish-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <glassfishDirectory>${glassfish.home}</glassfishDirectory>
+                    <domainDirectory>${glassfish.domain.dir}</domainDirectory>
+                    <user>${glassfish.domain.admin-user}</user>
+                    <adminPassword>${glassfish.domain.admin-password}</adminPassword>
+                    <autoCreate>true</autoCreate>
+                    <debug>false</debug>
+                    <echo>false</echo>
+                    <domain>
+                        <name>${glassfish.domain.name}</name>
+                        <adminPort>${glassfish.domain.admin-port}</adminPort>
+                        <httpPort>${glassfish.domain.http-port}</httpPort>
+                        <httpsPort>${glassfish.domain.https-port}</httpsPort>
+                    </domain>
+                    <components>
+                        <component>
+                            <name>${project.artifactId}</name>
+                            <artifact>${project.build.directory}/${project.build.finalName}.war</artifact>
+                        </component>
+                    </components>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
