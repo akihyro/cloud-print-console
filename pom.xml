@@ -47,7 +47,7 @@
                     <user>${glassfish.domain.admin-user}</user>
                     <adminPassword>${glassfish.domain.admin-password}</adminPassword>
                     <autoCreate>true</autoCreate>
-                    <debug>false</debug>
+                    <debug>true</debug>
                     <echo>false</echo>
                     <domain>
                         <name>${glassfish.domain.name}</name>
