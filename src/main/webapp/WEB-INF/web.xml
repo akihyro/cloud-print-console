@@ -5,6 +5,36 @@
 
     <display-name>cloud-print-console</display-name>
 
+    <filter>
+        <filter-name>jersey-mvc-jsp-filter</filter-name>
+        <filter-class>org.glassfish.jersey.servlet.ServletContainer</filter-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>akihyro.cloudprintconsole.CloudPrintConsoleApplication</param-value>
+        </init-param>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>
+                akihyro.cloudprintconsole
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>jersey.config.server.provider.classnames</param-name>
+            <param-value>
+                org.glassfish.jersey.server.mvc.jsp.JspMvcFeature
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>jersey.config.servlet.filter.forwardOn404</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>jersey-mvc-jsp-filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
