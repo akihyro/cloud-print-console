@@ -23,6 +23,15 @@
         <glassfish.domain.https-port>8443</glassfish.domain.https-port>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <finalName>cloud-print-console</finalName>
         <plugins>
