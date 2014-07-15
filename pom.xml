@@ -13,6 +13,8 @@
 
     <properties>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
         <glassfish.home>${env.GLASSFISH_HOME}</glassfish.home>
         <glassfish.domain.name>${project.artifactId}</glassfish.domain.name>
         <glassfish.domain.dir>${basedir}/domain</glassfish.domain.dir>
