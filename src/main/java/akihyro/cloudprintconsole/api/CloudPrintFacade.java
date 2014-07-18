@@ -1,5 +1,6 @@
 package akihyro.cloudprintconsole.api;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -11,8 +12,11 @@ import lombok.Getter;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
+import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
 import com.google.api.client.auth.oauth2.BearerToken;
 import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson.JacksonFactory;
@@ -68,6 +72,25 @@ public class CloudPrintFacade {
         AuthorizationCodeRequestUrl url = codeFlow.newAuthorizationUrl();
         url.setRedirectUri(apiInfo.getString("redirect-url"));
         return url.toURI();
+    }
+
+    /**
+     * 認可コードから認証情報を得る。
+     *
+     * @param authCode 認可コード。
+     * @return 認証情報。
+     * @throws IOException IOエラー。
+     */
+    public CloudPrintCredential takeCredential(String authCode) throws IOException {
+
+        // アクセストークンを得る
+        AuthorizationCodeTokenRequest req = codeFlow.newTokenRequest(authCode);
+        req.setRedirectUri(apiInfo.getString("redirect-url"));
+        TokenResponse res = req.execute();
+
+        // 認証情報を得る
+        Credential credential = codeFlow.createAndStoreCredential(res, null);
+        return new CloudPrintCredential(credential);
     }
 
 }
