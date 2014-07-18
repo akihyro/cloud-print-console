@@ -110,7 +110,7 @@ public class CloudPrintFacade {
         Request req = Request.Get(apiInfo.getString("api-url") + "/search");
         req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
         @Cleanup("discardContent") Response res = req.execute();
-        return new ObjectMapper().readValue(res.returnContent().asString(), Printers.class);
+        return new ObjectMapper().readValue(res.returnContent().asStream(), Printers.class);
     }
 
 }
