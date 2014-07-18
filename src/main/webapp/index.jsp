@@ -2,9 +2,12 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>cloud-print-console</title>
+    <title>Cloud Print Console</title>
 </head>
 <body>
-    <a href="auth">Auth</a>
+    <h1>Cloud Print Console</h1>
+    <p>
+        <a href="auth">ログイン</a>
+    </p>
 </body>
 </html>
