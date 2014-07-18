@@ -49,6 +49,11 @@
             <artifactId>google-http-client-jackson</artifactId>
             <version>1.18.0-rc</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client</artifactId>
+            <version>1.18.0-rc</version>
+        </dependency>
     </dependencies>
 
     <build>
