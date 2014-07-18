@@ -10,6 +10,7 @@ import org.glassfish.jersey.server.mvc.Template;
 
 import akihyro.cloudprintconsole.CloudPrintConsoleSession;
 import akihyro.cloudprintconsole.api.CloudPrintFacade;
+import akihyro.cloudprintconsole.model.Printers;
 
 /**
  * プリンタリストサービス。
@@ -35,8 +36,8 @@ public class PrintersService {
      */
     @GET
     @Template(name = "/printers")
-    public String printers() throws Exception {
-        return "TODO: Printers.";
+    public Printers printers() throws Exception {
+        return facade.takePrinters(session.getCredential());
     }
 
 }

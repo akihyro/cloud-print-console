@@ -8,8 +8,14 @@ import java.util.ResourceBundle;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
-import lombok.Getter;
+import org.apache.http.client.fluent.Request;
+import org.apache.http.client.fluent.Response;
 
+import lombok.Cleanup;
+import lombok.Getter;
+import akihyro.cloudprintconsole.model.Printers;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
 import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
@@ -91,6 +97,20 @@ public class CloudPrintFacade {
         // 認証情報を得る
         Credential credential = codeFlow.createAndStoreCredential(res, null);
         return new CloudPrintCredential(credential);
+    }
+
+    /**
+     * プリンタリストを取得する。
+     *
+     * @param credential 認証情報。
+     * @return プリンタリスト。
+     * @throws IOException IOエラー。
+     */
+    public Printers takePrinters(CloudPrintCredential credential) throws IOException {
+        Request req = Request.Get(apiInfo.getString("api-url") + "/search");
+        req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
+        @Cleanup("discardContent") Response res = req.execute();
+        return new ObjectMapper().readValue(res.returnContent().asString(), Printers.class);
     }
 
 }
