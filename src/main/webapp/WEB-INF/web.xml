@@ -39,6 +39,7 @@
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
             <page-encoding>utf-8</page-encoding>
+            <include-prelude>/_taglib.jsp</include-prelude>
         </jsp-property-group>
     </jsp-config>
 
