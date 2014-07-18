@@ -3,3 +3,4 @@
 /.settings
 /domain
 /target
+/src/main/resources/api.properties

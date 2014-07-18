@@ -5,5 +5,6 @@
     <title>cloud-print-console</title>
 </head>
 <body>
+    <a href="auth">Auth</a>
 </body>
 </html>
