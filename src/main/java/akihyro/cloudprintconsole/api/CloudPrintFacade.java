@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
+import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 
@@ -111,6 +112,29 @@ public class CloudPrintFacade {
         req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
         @Cleanup("discardContent") Response res = req.execute();
         return new ObjectMapper().readValue(res.returnContent().asStream(), Printers.class);
+    }
+
+    /**
+     * ジョブを投げる。
+     *
+     * @param credential 認証情報。
+     * @param printerID プリンタID。
+     * @return ジョブ結果。
+     * @throws IOException IOエラー。
+     */
+    public String submitJob(CloudPrintCredential credential, String printerID) throws IOException {
+        Request req = Request.Post(apiInfo.getString("api-url") + "/submit");
+        req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
+        req.bodyForm(
+                Form.form()
+                    .add("printerid", printerID)
+                    .add("title", "Cloud Print Console: Test Print.")
+                    .add("content", "<h1>Cloud Print Console: Test Print.</h1><p>Printer ID: " + printerID + "</p>")
+                    .add("contentType", "text/html")
+                    .build()
+            );
+        @Cleanup("discardContent") Response res = req.execute();
+        return res.returnContent().asString();
     }
 
 }
