@@ -3,4 +3,4 @@
 /.settings
 /domain
 /target
-/src/main/resources/api.properties
+/src/main/resources/cloud-print-api-info.xml

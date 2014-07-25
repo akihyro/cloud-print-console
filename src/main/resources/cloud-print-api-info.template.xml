@@ -1,0 +1,27 @@
+<!-- API情報 -->
+<cloud-print-api>
+
+    <!-- クライアントID -->
+    <client-id><!-- クライアントID --></client-id>
+
+    <!-- クライアントシークレット -->
+    <client-secret><!-- クライアントシークレット --></client-secret>
+
+    <!-- 認証URI -->
+    <auth-uri>https://accounts.google.com/o/oauth2/auth</auth-uri>
+
+    <!-- トークンURI -->
+    <token-uri>https://accounts.google.com/o/oauth2/token</token-uri>
+
+    <!-- スコープリスト -->
+    <scopes>
+        <scope>https://www.googleapis.com/auth/cloudprint</scope>
+    </scopes>
+
+    <!-- リダイレクトURI -->
+    <redirect-uri>http://cloud-print-console.net:8080/cloud-print-console/login</redirect-uri>
+
+    <!-- API URI -->
+    <api-uri>https://www.google.com/cloudprint</api-uri>
+
+</cloud-print-api>

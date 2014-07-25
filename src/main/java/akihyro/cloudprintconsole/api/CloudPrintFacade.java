@@ -2,8 +2,6 @@ package akihyro.cloudprintconsole.api;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.ResourceBundle;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
@@ -35,10 +33,8 @@ import com.google.api.client.json.jackson.JacksonFactory;
 @ApplicationScoped
 public class CloudPrintFacade {
 
-    /**
-     * API情報。
-     */
-    private static final ResourceBundle apiInfo = ResourceBundle.getBundle("api");
+    /** API情報 */
+    private final CloudPrintApiInfo apiInfo;
 
     /** 認可コードフロー */
     @Getter
@@ -46,8 +42,11 @@ public class CloudPrintFacade {
 
     /**
      * コンストラクタ。
+     *
+     * @throws IOException IOエラー。
      */
-    public CloudPrintFacade() {
+    public CloudPrintFacade() throws IOException {
+        apiInfo = CloudPrintApiInfo.load();
         codeFlow = newAuthorizationCodeFlow();
     }
 
@@ -61,12 +60,11 @@ public class CloudPrintFacade {
                 BearerToken.authorizationHeaderAccessMethod(),
                 new NetHttpTransport(),
                 new JacksonFactory(),
-                new GenericUrl(apiInfo.getString("token-url")),
-                new ClientParametersAuthentication(
-                        apiInfo.getString("client-id"), apiInfo.getString("client-secret")),
-                apiInfo.getString("client-id"),
-                apiInfo.getString("auth-url"));
-        builder.setScopes(Arrays.asList(apiInfo.getString("scopes").split(" ")));
+                new GenericUrl(apiInfo.getTokenUri()),
+                new ClientParametersAuthentication(apiInfo.getClientId(), apiInfo.getClientSecret()),
+                apiInfo.getClientId(),
+                apiInfo.getAuthUri().toString());
+        builder.setScopes(apiInfo.getScopes());
         return builder.build();
     }
 
@@ -77,7 +75,7 @@ public class CloudPrintFacade {
      */
     public URI newAuthCodeReqURI() {
         AuthorizationCodeRequestUrl url = codeFlow.newAuthorizationUrl();
-        url.setRedirectUri(apiInfo.getString("redirect-url"));
+        url.setRedirectUri(apiInfo.getRedirectUri().toString());
         return url.toURI();
     }
 
@@ -92,7 +90,7 @@ public class CloudPrintFacade {
 
         // アクセストークンを得る
         AuthorizationCodeTokenRequest req = codeFlow.newTokenRequest(authCode);
-        req.setRedirectUri(apiInfo.getString("redirect-url"));
+        req.setRedirectUri(apiInfo.getRedirectUri().toString());
         TokenResponse res = req.execute();
 
         // 認証情報を得る
@@ -108,7 +106,7 @@ public class CloudPrintFacade {
      * @throws IOException IOエラー。
      */
     public Printers takePrinters(CloudPrintCredential credential) throws IOException {
-        Request req = Request.Get(apiInfo.getString("api-url") + "/search");
+        Request req = Request.Get(apiInfo.getApiUri() + "/search");
         req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
         @Cleanup("discardContent") Response res = req.execute();
         return new ObjectMapper().readValue(res.returnContent().asStream(), Printers.class);
@@ -123,7 +121,7 @@ public class CloudPrintFacade {
      * @throws IOException IOエラー。
      */
     public String submitJob(CloudPrintCredential credential, String printerID) throws IOException {
-        Request req = Request.Post(apiInfo.getString("api-url") + "/submit");
+        Request req = Request.Post(apiInfo.getApiUri("submit"));
         req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
         req.bodyForm(
                 Form.form()
