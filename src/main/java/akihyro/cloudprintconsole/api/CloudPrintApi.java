@@ -8,35 +8,32 @@ import javax.inject.Named;
 
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
-import org.apache.http.client.fluent.Response;
 
-import lombok.Cleanup;
-import lombok.Getter;
 import akihyro.cloudprintconsole.model.Printers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
-import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
-import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
 import com.google.api.client.auth.oauth2.BearerToken;
 import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson.JacksonFactory;
 
+import lombok.Cleanup;
+import lombok.Getter;
+import lombok.val;
+
 /**
- * ファサード。
+ * API。
  */
 @Named
 @ApplicationScoped
-public class CloudPrintFacade {
+public class CloudPrintApi {
 
     /** API情報 */
     private final CloudPrintApiInfo apiInfo;
 
-    /** 認可コードフロー */
+    /** 認証コードフロー */
     @Getter
     private final AuthorizationCodeFlow codeFlow;
 
@@ -45,18 +42,18 @@ public class CloudPrintFacade {
      *
      * @throws IOException IOエラー。
      */
-    public CloudPrintFacade() throws IOException {
+    public CloudPrintApi() throws IOException {
         apiInfo = CloudPrintApiInfo.load();
         codeFlow = newAuthorizationCodeFlow();
     }
 
     /**
-     * 認可コードフローを生成する。
+     * 認証コードフローを生成する。
      *
-     * @return 認可コードフロー。
+     * @return 認証コードフロー。
      */
     private AuthorizationCodeFlow newAuthorizationCodeFlow() {
-        AuthorizationCodeFlow.Builder builder = new AuthorizationCodeFlow.Builder(
+        val builder = new AuthorizationCodeFlow.Builder(
                 BearerToken.authorizationHeaderAccessMethod(),
                 new NetHttpTransport(),
                 new JacksonFactory(),
@@ -74,7 +71,7 @@ public class CloudPrintFacade {
      * @return 認可コードリクエストURI。
      */
     public URI newAuthCodeReqURI() {
-        AuthorizationCodeRequestUrl url = codeFlow.newAuthorizationUrl();
+        val url = codeFlow.newAuthorizationUrl();
         url.setRedirectUri(apiInfo.getRedirectUri().toString());
         return url.toURI();
     }
@@ -89,12 +86,12 @@ public class CloudPrintFacade {
     public CloudPrintCredential takeCredential(String authCode) throws IOException {
 
         // アクセストークンを得る
-        AuthorizationCodeTokenRequest req = codeFlow.newTokenRequest(authCode);
+        val req = codeFlow.newTokenRequest(authCode);
         req.setRedirectUri(apiInfo.getRedirectUri().toString());
-        TokenResponse res = req.execute();
+        val res = req.execute();
 
         // 認証情報を得る
-        Credential credential = codeFlow.createAndStoreCredential(res, null);
+        val credential = codeFlow.createAndStoreCredential(res, null);
         return new CloudPrintCredential(credential);
     }
 
@@ -106,9 +103,9 @@ public class CloudPrintFacade {
      * @throws IOException IOエラー。
      */
     public Printers takePrinters(CloudPrintCredential credential) throws IOException {
-        Request req = Request.Get(apiInfo.getApiUri() + "/search");
+        val req = Request.Get(apiInfo.getApiUri() + "/search");
         req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
-        @Cleanup("discardContent") Response res = req.execute();
+        @Cleanup("discardContent") val res = req.execute();
         return new ObjectMapper().readValue(res.returnContent().asStream(), Printers.class);
     }
 
@@ -121,7 +118,7 @@ public class CloudPrintFacade {
      * @throws IOException IOエラー。
      */
     public String submitJob(CloudPrintCredential credential, String printerID) throws IOException {
-        Request req = Request.Post(apiInfo.getApiUri("submit"));
+        val req = Request.Post(apiInfo.getApiUri("submit"));
         req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
         req.bodyForm(
                 Form.form()
@@ -131,7 +128,7 @@ public class CloudPrintFacade {
                     .add("contentType", "text/html")
                     .build()
             );
-        @Cleanup("discardContent") Response res = req.execute();
+        @Cleanup("discardContent") val res = req.execute();
         return res.returnContent().asString();
     }
 

@@ -13,7 +13,7 @@ import lombok.Setter;
 import org.glassfish.jersey.server.mvc.Template;
 
 import akihyro.cloudprintconsole.CloudPrintConsoleSession;
-import akihyro.cloudprintconsole.api.CloudPrintFacade;
+import akihyro.cloudprintconsole.api.CloudPrintApi;
 
 /**
  * ジョブサブミットサービス。
@@ -23,9 +23,9 @@ import akihyro.cloudprintconsole.api.CloudPrintFacade;
 @Path("/submit-job")
 public class JobSubmitService {
 
-    /** ファサード */
+    /** API */
     @Inject
-    CloudPrintFacade facade;
+    CloudPrintApi api;
 
     /** セッション */
     @Inject
@@ -47,7 +47,7 @@ public class JobSubmitService {
     @GET
     @Template(name = "/printed")
     public String submitJob() throws Exception {
-        return facade.submitJob(session.getCredential(), printerID);
+        return api.submitJob(session.getCredential(), printerID);
     }
 
 }

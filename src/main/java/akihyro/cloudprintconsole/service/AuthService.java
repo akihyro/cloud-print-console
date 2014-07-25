@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import akihyro.cloudprintconsole.CloudPrintConsoleSession;
-import akihyro.cloudprintconsole.api.CloudPrintFacade;
+import akihyro.cloudprintconsole.api.CloudPrintApi;
 
 /**
  * 認証サービス。
@@ -26,9 +26,9 @@ public class AuthService {
     @Context
     UriInfo uriInfo;
 
-    /** ファサード */
+    /** API */
     @Inject
-    CloudPrintFacade facade;
+    CloudPrintApi api;
 
     /** セッション */
     @Inject
@@ -50,7 +50,7 @@ public class AuthService {
             redirectURI = uriInfo.getBaseUriBuilder().path(LoginService.class).build();
         } else {
             // 未認証なら認可コードをリクエストする
-            redirectURI = facade.newAuthCodeReqURI();
+            redirectURI = api.newAuthCodeReqURI();
         }
 
         return Response.seeOther(redirectURI).build();

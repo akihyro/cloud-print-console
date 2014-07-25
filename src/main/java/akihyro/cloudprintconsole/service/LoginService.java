@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import akihyro.cloudprintconsole.CloudPrintConsoleSession;
-import akihyro.cloudprintconsole.api.CloudPrintFacade;
+import akihyro.cloudprintconsole.api.CloudPrintApi;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,9 +30,9 @@ public class LoginService {
     @Context
     UriInfo uriInfo;
 
-    /** ファサード */
+    /** API */
     @Inject
-    CloudPrintFacade facade;
+    CloudPrintApi api;
 
     /** セッション */
     @Inject
@@ -54,7 +54,7 @@ public class LoginService {
 
         // 未認証なら認証情報を得る
         if (!session.hasCredential()) {
-            session.setCredential(facade.takeCredential(authCode));
+            session.setCredential(api.takeCredential(authCode));
         }
 
         // プリンタリストへリダイレクトする
