@@ -18,6 +18,7 @@ import com.google.api.client.auth.oauth2.ClientParametersAuthentication;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson.JacksonFactory;
+import com.google.api.client.util.store.MemoryDataStoreFactory;
 
 import lombok.Cleanup;
 import lombok.Getter;
@@ -51,8 +52,9 @@ public class CloudPrintApi {
      * 認証コードフローを生成する。
      *
      * @return 認証コードフロー。
+     * @throws IOException IOエラー。
      */
-    private AuthorizationCodeFlow newAuthorizationCodeFlow() {
+    private AuthorizationCodeFlow newAuthorizationCodeFlow() throws IOException {
         val builder = new AuthorizationCodeFlow.Builder(
                 BearerToken.authorizationHeaderAccessMethod(),
                 new NetHttpTransport(),
@@ -62,7 +64,19 @@ public class CloudPrintApi {
                 apiInfo.getClientId(),
                 apiInfo.getAuthUri().toString());
         builder.setScopes(apiInfo.getScopes());
+        builder.setDataStoreFactory(MemoryDataStoreFactory.getDefaultInstance());
         return builder.build();
+    }
+
+    /**
+     * 認証情報があるか判定する。
+     *
+     * @param userId ユーザID。
+     * @return 認証情報があるかどうか。
+     * @throws IOException IOエラー。
+     */
+    public boolean hasCredential(String userId) throws IOException {
+        return codeFlow.loadCredential(userId) != null;
     }
 
     /**
@@ -77,32 +91,28 @@ public class CloudPrintApi {
     }
 
     /**
-     * 認可コードから認証情報を得る。
+     * 認可コードから認証情報を取得/保存する。
      *
+     * @param userId ユーザID。
      * @param authCode 認可コード。
-     * @return 認証情報。
      * @throws IOException IOエラー。
      */
-    public CloudPrintCredential takeCredential(String authCode) throws IOException {
-
-        // アクセストークンを得る
+    public void storeCredential(String userId, String authCode) throws IOException {
         val req = codeFlow.newTokenRequest(authCode);
         req.setRedirectUri(apiInfo.getRedirectUri().toString());
         val res = req.execute();
-
-        // 認証情報を得る
-        val credential = codeFlow.createAndStoreCredential(res, null);
-        return new CloudPrintCredential(credential);
+        codeFlow.createAndStoreCredential(res, userId);
     }
 
     /**
      * プリンタリストを取得する。
      *
-     * @param credential 認証情報。
+     * @param userId ユーザID。
      * @return プリンタリスト。
      * @throws IOException IOエラー。
      */
-    public Printers takePrinters(CloudPrintCredential credential) throws IOException {
+    public Printers takePrinters(String userId) throws IOException {
+        val credential = codeFlow.loadCredential(userId);
         val req = Request.Get(apiInfo.getApiUri() + "/search");
         req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
         @Cleanup("discardContent") val res = req.execute();
@@ -112,12 +122,13 @@ public class CloudPrintApi {
     /**
      * ジョブを投げる。
      *
-     * @param credential 認証情報。
+     * @param userId ユーザID。
      * @param printerID プリンタID。
      * @return ジョブ結果。
      * @throws IOException IOエラー。
      */
-    public String submitJob(CloudPrintCredential credential, String printerID) throws IOException {
+    public String submitJob(String userId, String printerID) throws IOException {
+        val credential = codeFlow.loadCredential(userId);
         val req = Request.Post(apiInfo.getApiUri("submit"));
         req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
         req.bodyForm(

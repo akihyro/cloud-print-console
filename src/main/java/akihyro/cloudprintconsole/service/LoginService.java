@@ -52,9 +52,9 @@ public class LoginService {
     @GET
     public Response login() throws Exception {
 
-        // 未認証なら認証情報を得る
-        if (!session.hasCredential()) {
-            session.setCredential(api.takeCredential(authCode));
+        // 未認証なら認証情報を取得/保存する
+        if (!api.hasCredential(session.getId())) {
+            api.storeCredential(session.getId(), authCode);
         }
 
         // プリンタリストへリダイレクトする

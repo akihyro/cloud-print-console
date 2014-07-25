@@ -41,13 +41,13 @@ public class JobSubmitService {
     /**
      * プリンタをリストアップする。
      *
-     * @return 認証ページへリダイレクト。
+     * @return プリントジョブ結果。
      * @throws Exception エラー。
      */
     @GET
     @Template(name = "/printed")
     public String submitJob() throws Exception {
-        return api.submitJob(session.getCredential(), printerID);
+        return api.submitJob(session.getId(), printerID);
     }
 
 }

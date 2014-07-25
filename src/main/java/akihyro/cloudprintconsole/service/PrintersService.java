@@ -31,13 +31,13 @@ public class PrintersService {
     /**
      * プリンタをリストアップする。
      *
-     * @return 認証ページへリダイレクト。
+     * @return プリンタリスト。
      * @throws Exception エラー。
      */
     @GET
     @Template(name = "/printers")
     public Printers printers() throws Exception {
-        return api.takePrinters(session.getCredential());
+        return api.takePrinters(session.getId());
     }
 
 }

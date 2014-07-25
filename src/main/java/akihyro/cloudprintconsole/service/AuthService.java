@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
@@ -34,6 +35,10 @@ public class AuthService {
     @Inject
     CloudPrintConsoleSession session;
 
+    /** セッションID */
+    @CookieParam("JSESSIONID")
+    private String sessionId;
+
     /**
      * 認証する。
      *
@@ -43,9 +48,12 @@ public class AuthService {
     @GET
     public Response auth() throws Exception {
 
+        // セッションIDを保持する
+        session.setId(sessionId);
+
         // リダイレクト先を決定する
         URI redirectURI = null;
-        if (session.hasCredential()) {
+        if (api.hasCredential(session.getId())) {
             // セッションが認証済ならログインする
             redirectURI = uriInfo.getBaseUriBuilder().path(LoginService.class).build();
         } else {
