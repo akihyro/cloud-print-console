@@ -37,7 +37,7 @@ public class AuthService {
 
     /** セッションID */
     @CookieParam("JSESSIONID")
-    private String sessionId;
+    String sessionId;
 
     /**
      * 認証する。

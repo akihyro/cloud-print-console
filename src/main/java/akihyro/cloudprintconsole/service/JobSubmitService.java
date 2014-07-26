@@ -10,8 +10,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
 import lombok.Cleanup;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.val;
 
 import org.glassfish.jersey.server.mvc.Template;
@@ -40,8 +38,7 @@ public class JobSubmitService {
      * プリンタID。
      */
     @QueryParam("printer-id")
-    @Getter @Setter
-    private String printerId;
+    String printerId;
 
     /**
      * プリンタをリストアップする。

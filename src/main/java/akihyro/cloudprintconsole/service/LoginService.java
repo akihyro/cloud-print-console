@@ -15,8 +15,6 @@ import javax.ws.rs.core.UriInfo;
 
 import akihyro.cloudprintconsole.CloudPrintConsoleSession;
 import akihyro.cloudprintconsole.api.CloudPrintApi;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * ログインサービス。
@@ -40,8 +38,7 @@ public class LoginService {
 
     /** 認可コード */
     @QueryParam("code")
-    @Getter @Setter
-    private String authCode;
+    String authCode;
 
     /**
      * ログインする。
