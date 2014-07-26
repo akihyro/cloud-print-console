@@ -1,5 +1,7 @@
 package akihyro.cloudprintconsole.service;
 
+import java.io.ByteArrayInputStream;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -7,13 +9,16 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.val;
 
 import org.glassfish.jersey.server.mvc.Template;
 
 import akihyro.cloudprintconsole.CloudPrintConsoleSession;
 import akihyro.cloudprintconsole.api.CloudPrintApi;
+import akihyro.cloudprintconsole.api.model.CloudPrintApiSubmitReq;
 
 /**
  * ジョブサブミットサービス。
@@ -36,7 +41,7 @@ public class JobSubmitService {
      */
     @QueryParam("printer-id")
     @Getter @Setter
-    private String printerID;
+    private String printerId;
 
     /**
      * プリンタをリストアップする。
@@ -47,7 +52,14 @@ public class JobSubmitService {
     @GET
     @Template(name = "/printed")
     public String submitJob() throws Exception {
-        return api.submitJob(session.getId(), printerID);
+        val submitReq = new CloudPrintApiSubmitReq();
+        submitReq.setPrinterId(printerId);
+        submitReq.setTitle("Cloud Print Console: Test Print.");
+        submitReq.setContentType("text/html");
+        @Cleanup val content = new ByteArrayInputStream(
+                ("<h1>Cloud Print Console: Test Print.</h1><p>Printer ID: " + printerId + "</p>").getBytes());
+        submitReq.setContent(content);
+        return api.call(session.getId(), submitReq).toString();
     }
 
 }

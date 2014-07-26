@@ -6,11 +6,14 @@ import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
+import lombok.val;
+
 import org.glassfish.jersey.server.mvc.Template;
 
 import akihyro.cloudprintconsole.CloudPrintConsoleSession;
 import akihyro.cloudprintconsole.api.CloudPrintApi;
-import akihyro.cloudprintconsole.model.Printers;
+import akihyro.cloudprintconsole.api.model.CloudPrintApiSearchReq;
+import akihyro.cloudprintconsole.api.model.CloudPrintApiSearchRes;
 
 /**
  * プリンタリストサービス。
@@ -36,8 +39,9 @@ public class PrintersService {
      */
     @GET
     @Template(name = "/printers")
-    public Printers printers() throws Exception {
-        return api.takePrinters(session.getId());
+    public CloudPrintApiSearchRes printers() throws Exception {
+        val req = new CloudPrintApiSearchReq();
+        return api.call(session.getId(), req);
     }
 
 }

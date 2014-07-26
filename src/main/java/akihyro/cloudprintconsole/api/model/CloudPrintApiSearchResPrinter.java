@@ -1,6 +1,7 @@
-package akihyro.cloudprintconsole.model;
+package akihyro.cloudprintconsole.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
@@ -9,21 +10,26 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Printer {
+public class CloudPrintApiSearchResPrinter {
 
     /** ID */
+    @JsonProperty("id")
     private String id;
 
     /** 名前 */
+    @JsonProperty("name")
     private String name;
 
     /** 表示名 */
+    @JsonProperty("displayName")
     private String displayName;
 
     /** 説明 */
+    @JsonProperty("description")
     private String description;
 
     /** 接続状態 */
+    @JsonProperty("connectionStatus")
     private String connectionStatus;
 
 }

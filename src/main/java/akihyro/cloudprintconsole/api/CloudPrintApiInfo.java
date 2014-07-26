@@ -9,15 +9,18 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import lombok.AccessLevel;
 import lombok.Cleanup;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 
 /**
  * API情報。
  */
 @Data
+@Setter(AccessLevel.PACKAGE)
 @XmlRootElement(name = "cloud-print-api")
 public class CloudPrintApiInfo {
 
@@ -71,7 +74,7 @@ public class CloudPrintApiInfo {
      * @return API-URI。
      */
     public URI getApiUri(String name) {
-        return URI.create(getApiUri() + "/" + name);
+        return URI.create(getApiUri() + name);
     }
 
     /**

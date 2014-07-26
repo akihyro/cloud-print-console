@@ -2,14 +2,16 @@ package akihyro.cloudprintconsole.api;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
-import org.apache.http.client.fluent.Form;
-import org.apache.http.client.fluent.Request;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicHeader;
 
-import akihyro.cloudprintconsole.model.Printers;
+import akihyro.cloudprintconsole.api.model.CloudPrintApiReq;
+import akihyro.cloudprintconsole.api.model.CloudPrintApiRes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
@@ -32,6 +34,7 @@ import lombok.val;
 public class CloudPrintApi {
 
     /** API情報 */
+    @Getter
     private final CloudPrintApiInfo apiInfo;
 
     /** 認証コードフロー */
@@ -105,42 +108,33 @@ public class CloudPrintApi {
     }
 
     /**
-     * プリンタリストを取得する。
+     * APIをコールする。
      *
      * @param userId ユーザID。
-     * @return プリンタリスト。
+     * @param req APIリクエスト。
+     * @return APIレスポンス。
      * @throws IOException IOエラー。
      */
-    public Printers takePrinters(String userId) throws IOException {
-        val credential = codeFlow.loadCredential(userId);
-        val req = Request.Get(apiInfo.getApiUri() + "/search");
-        req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
-        @Cleanup("discardContent") val res = req.execute();
-        return new ObjectMapper().readValue(res.returnContent().asStream(), Printers.class);
-    }
+    public <ResType extends CloudPrintApiRes> ResType
+    call(String userId, CloudPrintApiReq<ResType> req) throws IOException {
 
-    /**
-     * ジョブを投げる。
-     *
-     * @param userId ユーザID。
-     * @param printerID プリンタID。
-     * @return ジョブ結果。
-     * @throws IOException IOエラー。
-     */
-    public String submitJob(String userId, String printerID) throws IOException {
+        // 認証情報をロードする
         val credential = codeFlow.loadCredential(userId);
-        val req = Request.Post(apiInfo.getApiUri("submit"));
-        req.addHeader("Authorization", "OAuth " + credential.getAccessToken());
-        req.bodyForm(
-                Form.form()
-                    .add("printerid", printerID)
-                    .add("title", "Cloud Print Console: Test Print.")
-                    .add("content", "<h1>Cloud Print Console: Test Print.</h1><p>Printer ID: " + printerID + "</p>")
-                    .add("contentType", "text/html")
-                    .build()
-            );
-        @Cleanup("discardContent") val res = req.execute();
-        return res.returnContent().asString();
+
+        // HTTPクライアントを生成する
+        val builder = HttpClientBuilder.create();
+        builder.setDefaultHeaders(Arrays.asList(
+                new BasicHeader("Authorization", "OAuth " + credential.getAccessToken())));
+        @Cleanup val httpClient = builder.build();
+
+        // HTTPリクエストを発行し、HTTPレスポンスを得る
+        val httpReq = req.toHttpReq(apiInfo);
+        @Cleanup val httpRes = httpClient.execute(httpReq);
+        val httpResEntity = httpRes.getEntity();
+
+        // HTTPレスポンスをオブジェクトへ変換する
+        @Cleanup val httpResContent = httpResEntity.getContent();
+        return new ObjectMapper().readValue(httpResContent, req.getResType());
     }
 
 }
