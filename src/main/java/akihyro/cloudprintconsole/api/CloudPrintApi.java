@@ -5,7 +5,6 @@ import java.net.URI;
 import java.util.Arrays;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
 
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
@@ -29,7 +28,6 @@ import lombok.val;
 /**
  * API。
  */
-@Named
 @ApplicationScoped
 public class CloudPrintApi {
 

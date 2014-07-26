@@ -4,7 +4,6 @@ import java.net.URI;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -18,7 +17,6 @@ import akihyro.cloudprintconsole.api.CloudPrintApi;
 /**
  * 認証サービス。
  */
-@Named
 @RequestScoped
 @Path("/auth")
 public class AuthService {

@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -21,7 +20,6 @@ import akihyro.cloudprintconsole.api.model.CloudPrintApiSubmitReq;
 /**
  * ジョブサブミットサービス。
  */
-@Named
 @RequestScoped
 @Path("/submit-job")
 public class JobSubmitService {

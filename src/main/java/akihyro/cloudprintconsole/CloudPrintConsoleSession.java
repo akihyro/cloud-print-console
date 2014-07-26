@@ -3,14 +3,12 @@ package akihyro.cloudprintconsole;
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
 
 import lombok.Data;
 
 /**
  * セッション。
  */
-@Named
 @SessionScoped
 @Data
 public class CloudPrintConsoleSession implements Serializable {

@@ -2,7 +2,6 @@ package akihyro.cloudprintconsole.service;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
@@ -18,7 +17,6 @@ import akihyro.cloudprintconsole.api.model.CloudPrintApiSearchRes;
 /**
  * プリンタリストサービス。
  */
-@Named
 @RequestScoped
 @Path("/printers")
 public class PrintersService {

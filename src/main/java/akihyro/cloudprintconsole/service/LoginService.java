@@ -5,7 +5,6 @@ import java.net.URI;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -19,7 +18,6 @@ import akihyro.cloudprintconsole.api.CloudPrintApi;
 /**
  * ログインサービス。
  */
-@Named
 @RequestScoped
 @Path("/login")
 public class LoginService {
