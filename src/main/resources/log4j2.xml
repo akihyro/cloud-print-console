@@ -1,0 +1,19 @@
+<!-- ログ設定 -->
+<Configuration status="warn">
+
+    <Appenders>
+        <Console name="console">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="akihyro.cloudprintconsole" level="trace" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Root level="warn">
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+
+</Configuration>
