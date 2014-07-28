@@ -1,6 +1,8 @@
 package akihyro.cloudprintconsole.api;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URI;
 import java.util.List;
 
@@ -8,6 +10,8 @@ import javax.xml.bind.JAXB;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.apache.http.HttpHost;
 
 import lombok.AccessLevel;
 import lombok.Cleanup;
@@ -67,6 +71,12 @@ public class CloudPrintApiInfo {
     }) )
     private URI apiUri;
 
+    /** プロキシ情報 */
+    @Getter(onMethod = @__({
+        @XmlElement(name = "proxy"),
+    }) )
+    private ProxyInfo proxyInfo;
+
     /**
      * API-URIを取得する。
      *
@@ -78,6 +88,30 @@ public class CloudPrintApiInfo {
     }
 
     /**
+     * プロキシを取得する。
+     *
+     * @return プロキシ。
+     */
+    public Proxy takeProxy() {
+        if (proxyInfo == null) {
+            return null;
+        }
+        return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyInfo.getHost(), proxyInfo.getPort()));
+    }
+
+    /**
+     * プロキシHTTPホストを取得する。
+     *
+     * @return プロキシHTTPホスト。
+     */
+    public HttpHost takeProxyHttpHost() {
+        if (proxyInfo == null) {
+            return null;
+        }
+        return new HttpHost(proxyInfo.getHost(), proxyInfo.getPort());
+    }
+
+    /**
      * ロードする。
      *
      * @return API情報。
@@ -86,6 +120,26 @@ public class CloudPrintApiInfo {
     public static CloudPrintApiInfo load() throws IOException {
         @Cleanup val resource = CloudPrintApiInfo.class.getResourceAsStream("/cloud-print-api-info.xml");
         return JAXB.unmarshal(resource, CloudPrintApiInfo.class);
+    }
+
+    /** プロキシ情報 */
+    @Data
+    @Setter(AccessLevel.PACKAGE)
+    @XmlRootElement(name = "proxy")
+    public static class ProxyInfo {
+
+        /** ホスト */
+        @Getter(onMethod = @__({
+            @XmlElement(name = "host"),
+        }) )
+        private String host;
+
+        /** ポート */
+        @Getter(onMethod = @__({
+            @XmlElement(name = "port"),
+        }) )
+        private Integer port;
+
     }
 
 }

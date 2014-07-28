@@ -24,4 +24,10 @@
     <!-- API URI -->
     <api-uri>https://www.google.com/cloudprint</api-uri>
 
+    <!-- プロキシ -->
+    <!--proxy>
+        <host>ホスト</host>
+        <port>ポート</port>
+    </proxy-->
+
 </cloud-print-api>

@@ -58,7 +58,7 @@ public class CloudPrintApi {
     private AuthorizationCodeFlow newAuthorizationCodeFlow() throws IOException {
         val builder = new AuthorizationCodeFlow.Builder(
                 BearerToken.authorizationHeaderAccessMethod(),
-                new NetHttpTransport(),
+                newNetHttpTransportForAuth(),
                 new JacksonFactory(),
                 new GenericUrl(apiInfo.getTokenUri()),
                 new ClientParametersAuthentication(apiInfo.getClientId(), apiInfo.getClientSecret()),
@@ -66,6 +66,17 @@ public class CloudPrintApi {
                 apiInfo.getAuthUri().toString());
         builder.setScopes(apiInfo.getScopes());
         builder.setDataStoreFactory(MemoryDataStoreFactory.getDefaultInstance());
+        return builder.build();
+    }
+
+    /**
+     * 認証用HTTPトランスポートを生成する。
+     *
+     * @return 認証用HTTPトランスポート。
+     */
+    private NetHttpTransport newNetHttpTransportForAuth() {
+        val builder = new NetHttpTransport.Builder();
+        builder.setProxy(apiInfo.takeProxy());
         return builder.build();
     }
 
@@ -121,6 +132,7 @@ public class CloudPrintApi {
 
         // HTTPクライアントを生成する
         val builder = HttpClientBuilder.create();
+        builder.setProxy(apiInfo.takeProxyHttpHost());
         builder.setDefaultHeaders(Arrays.asList(
                 new BasicHeader("Authorization", "OAuth " + credential.getAccessToken())));
         @Cleanup val httpClient = builder.build();
