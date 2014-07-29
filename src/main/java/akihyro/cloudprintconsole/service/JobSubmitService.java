@@ -22,7 +22,7 @@ import akihyro.cloudprintconsole.api.model.CloudPrintApiSubmitReq;
  */
 @RequestScoped
 @Path("/submit-job")
-public class JobSubmitService {
+public class JobSubmitService extends BaseService {
 
     /** API */
     @Inject

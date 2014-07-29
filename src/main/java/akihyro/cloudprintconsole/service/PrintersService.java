@@ -19,7 +19,7 @@ import akihyro.cloudprintconsole.api.model.CloudPrintApiSearchRes;
  */
 @RequestScoped
 @Path("/printers")
-public class PrintersService {
+public class PrintersService extends BaseService {
 
     /** API */
     @Inject

@@ -1,26 +1,17 @@
-package akihyro.cloudprintconsole;
+package akihyro.cloudprintconsole.service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
 
 import org.apache.commons.lang3.ObjectUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * アプリケーション。
+ * ベースサービス。
  */
-@ApplicationPath("/")
 @Slf4j
-public class CloudPrintConsoleApplication extends Application {
-
-    /**
-     * コンストラクタ。
-     */
-    public CloudPrintConsoleApplication() {
-    }
+public abstract class BaseService {
 
     /**
      * 初期化する。

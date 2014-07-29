@@ -19,7 +19,7 @@ import akihyro.cloudprintconsole.api.CloudPrintApi;
  */
 @RequestScoped
 @Path("/auth")
-public class AuthService {
+public class AuthService extends BaseService {
 
     /** URI情報 */
     @Context

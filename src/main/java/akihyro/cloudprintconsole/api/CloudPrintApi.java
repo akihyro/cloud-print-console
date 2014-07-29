@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 
@@ -24,11 +27,13 @@ import com.google.api.client.util.store.MemoryDataStoreFactory;
 import lombok.Cleanup;
 import lombok.Getter;
 import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * API。
  */
 @ApplicationScoped
+@Slf4j
 public class CloudPrintApi {
 
     /** API情報 */
@@ -47,6 +52,22 @@ public class CloudPrintApi {
     public CloudPrintApi() throws IOException {
         apiInfo = CloudPrintApiInfo.load();
         codeFlow = newAuthorizationCodeFlow();
+    }
+
+    /**
+     * 初期化する。
+     */
+    @PostConstruct
+    public void init() {
+        log.trace("@PostConstruct: {}", ObjectUtils.identityToString(this));
+    }
+
+    /**
+     * 解放する。
+     */
+    @PreDestroy
+    public void release() {
+        log.trace("@PreDestroy: {}", ObjectUtils.identityToString(this));
     }
 
     /**
