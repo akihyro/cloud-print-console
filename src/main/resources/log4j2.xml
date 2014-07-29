@@ -6,7 +6,7 @@
             fileName="${cloud-print-console.log.dir}/app.log"
             filePattern="${cloud-print-console.log.dir}/%d{yyyy-MM-dd}_app.log.gz">
             <PatternLayout>
-                <Pattern>[%d{yyyy-MM-ss HH:mm:ss}] [%-18t] [%-5p] %m @%c#%M(%L)%n</Pattern>
+                <Pattern>[%d{yyyy-MM-ss HH:mm:ss}] [%-18t] [%-5p] %m - %l%n</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy />
