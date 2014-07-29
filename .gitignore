@@ -2,5 +2,7 @@
 /.project
 /.settings
 /domain
+/log/*.log
+/log/*.log.gz
 /target
 /src/main/resources/cloud-print-api-info.xml

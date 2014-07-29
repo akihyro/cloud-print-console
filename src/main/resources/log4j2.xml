@@ -2,17 +2,24 @@
 <Configuration status="warn">
 
     <Appenders>
-        <Console name="console">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </Console>
+        <RollingFile name="file"
+            fileName="${cloud-print-console.log.dir}/app.log"
+            filePattern="${cloud-print-console.log.dir}/%d{yyyy-MM-dd}_app.log.gz">
+            <PatternLayout>
+                <Pattern>[%d{yyyy-MM-ss HH:mm:ss}] [%-18t] [%-5p] %m @%c#%M(%L)%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
     </Appenders>
 
     <Loggers>
         <Logger name="akihyro.cloudprintconsole" level="trace" additivity="false">
-            <AppenderRef ref="console" />
+            <AppenderRef ref="file" />
         </Logger>
         <Root level="warn">
-            <AppenderRef ref="console" />
+            <AppenderRef ref="file" />
         </Root>
     </Loggers>
 

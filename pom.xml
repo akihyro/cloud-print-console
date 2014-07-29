@@ -23,6 +23,7 @@
         <glassfish.domain.admin-port>4848</glassfish.domain.admin-port>
         <glassfish.domain.http-port>8080</glassfish.domain.http-port>
         <glassfish.domain.https-port>8443</glassfish.domain.https-port>
+        <cloud-print-console.log.dir>${basedir}/log</cloud-print-console.log.dir>
     </properties>
 
     <dependencies>
@@ -108,6 +109,12 @@
 
     <build>
         <finalName>cloud-print-console</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.glassfish.maven.plugin</groupId>
