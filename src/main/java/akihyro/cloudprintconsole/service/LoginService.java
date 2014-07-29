@@ -46,7 +46,7 @@ public class LoginService extends BaseService {
      * @throws Exception エラー。
      */
     @GET
-    public Response login() throws Exception {
+    public Response get() throws Exception {
 
         // 未認証なら認証情報を取得/保存する
         if (!api.hasCredential(session.getId())) {

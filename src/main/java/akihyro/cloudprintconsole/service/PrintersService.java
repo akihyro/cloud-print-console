@@ -40,7 +40,7 @@ public class PrintersService extends BaseService {
      */
     @GET
     @Template(name = "/printers")
-    public PrintersServiceRes printers() throws Exception {
+    public PrintersServiceRes get() throws Exception {
         val apiReq = new CloudPrintApiSearchReq();
         val apiRes = api.call(session.getId(), apiReq);
         val printers = new ArrayList<PrintersServiceResPrinter>(apiRes.getPrinters().size());

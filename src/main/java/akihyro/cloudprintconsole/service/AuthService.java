@@ -44,7 +44,7 @@ public class AuthService extends BaseService {
      * @throws Exception エラー。
      */
     @GET
-    public Response auth() throws Exception {
+    public Response get() throws Exception {
 
         // セッションIDを保持する
         session.setId(sessionId);

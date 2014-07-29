@@ -45,7 +45,7 @@ public class SubmitService extends BaseService {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Template(name = "/printed")
-    public String submit() throws Exception {
+    public String post() throws Exception {
         val apiReq = new CloudPrintApiSubmitReq();
         apiReq.setPrinterId(req.getPrinterId());
         apiReq.setTitle(req.getTitle());

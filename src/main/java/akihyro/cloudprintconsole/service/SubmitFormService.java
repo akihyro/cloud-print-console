@@ -31,7 +31,7 @@ public class SubmitFormService extends BaseService {
      */
     @GET
     @Template(name = "/submit-form")
-    public SubmitFormServiceRes display() throws Exception {
+    public SubmitFormServiceRes get() throws Exception {
         val res = new SubmitFormServiceRes();
         res.setPrinterId(req.getPrinterId());
         return res;
