@@ -13,7 +13,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import akihyro.cloudprintconsole.api.CloudPrintApiInfo;
 
 /**
- * ジョブサブミットAPIリクエスト。
+ * サブミットAPIリクエスト。
  */
 @Data
 public class CloudPrintApiSubmitReq implements CloudPrintApiReq<CloudPrintApiSubmitRes> {

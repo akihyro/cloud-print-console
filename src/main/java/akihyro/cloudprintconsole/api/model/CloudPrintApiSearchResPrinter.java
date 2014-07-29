@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
- * プリンタ。
+ * プリンタ検索APIレスポンス：プリンタ。
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
