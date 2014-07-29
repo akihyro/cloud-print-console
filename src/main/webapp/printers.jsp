@@ -11,7 +11,7 @@
             <th>Name</th>
             <th>Description</th>
             <th>Connection Status</th>
-            <th>Submit!!</th>
+            <th>Submit...</th>
         </tr>
         <c:forEach var="printer" items="${it.printers}">
         <tr>
@@ -19,10 +19,10 @@
             <td><c:out value="${printer.description}" /></td>
             <td><c:out value="${printer.connectionStatus}" /></td>
             <td>
-                <c:url var="submitURL" value="submit-job">
+                <c:url var="submitFormUrl" value="submit-form">
                     <c:param name="printer-id" value="${printer.id}" />
                 </c:url>
-                <a href="${submitURL}">Submit!!</a>
+                <a href="${submitFormUrl}">Submit...</a>
             </td>
         </tr>
         </c:forEach>
