@@ -6,8 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.SessionScoped;
 
-import org.apache.commons.lang3.ObjectUtils;
-
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +28,7 @@ public class CloudPrintConsoleSession implements Serializable {
      */
     @PostConstruct
     public void init() {
-        log.trace("@PostConstruct: {}", ObjectUtils.identityToString(this));
+        log.debug("セッションを初期化しました。 => {}", this);
     }
 
     /**
@@ -38,7 +36,7 @@ public class CloudPrintConsoleSession implements Serializable {
      */
     @PreDestroy
     public void release() {
-        log.trace("@PreDestroy: {}", ObjectUtils.identityToString(this));
+        log.debug("セッションを解放しました。 => {}", this);
     }
 
 }

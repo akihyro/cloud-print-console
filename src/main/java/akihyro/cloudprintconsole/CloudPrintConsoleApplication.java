@@ -5,8 +5,6 @@ import javax.annotation.PreDestroy;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-import org.apache.commons.lang3.ObjectUtils;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -27,7 +25,7 @@ public class CloudPrintConsoleApplication extends Application {
      */
     @PostConstruct
     public void init() {
-        log.trace("@PostConstruct: {}", ObjectUtils.identityToString(this));
+        log.debug("アプリケーションを初期化しました。 => {}", this);
     }
 
     /**
@@ -35,7 +33,7 @@ public class CloudPrintConsoleApplication extends Application {
      */
     @PreDestroy
     public void release() {
-        log.trace("@PreDestroy: {}", ObjectUtils.identityToString(this));
+        log.debug("アプリケーションを解放しました。 => {}", this);
     }
 
 }

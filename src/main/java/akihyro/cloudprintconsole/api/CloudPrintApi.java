@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 
@@ -26,6 +25,7 @@ import com.google.api.client.util.store.MemoryDataStoreFactory;
 
 import lombok.Cleanup;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,28 +38,21 @@ public class CloudPrintApi {
 
     /** API情報 */
     @Getter
-    private final CloudPrintApiInfo apiInfo;
+    private CloudPrintApiInfo apiInfo;
 
     /** 認証コードフロー */
     @Getter
-    private final AuthorizationCodeFlow codeFlow;
-
-    /**
-     * コンストラクタ。
-     *
-     * @throws IOException IOエラー。
-     */
-    public CloudPrintApi() throws IOException {
-        apiInfo = CloudPrintApiInfo.load();
-        codeFlow = newAuthorizationCodeFlow();
-    }
+    private AuthorizationCodeFlow codeFlow;
 
     /**
      * 初期化する。
      */
     @PostConstruct
+    @SneakyThrows
     public void init() {
-        log.trace("@PostConstruct: {}", ObjectUtils.identityToString(this));
+        apiInfo = CloudPrintApiInfo.load();
+        codeFlow = newAuthorizationCodeFlow();
+        log.debug("APIを初期化しました。 => {}", this);
     }
 
     /**
@@ -67,7 +60,7 @@ public class CloudPrintApi {
      */
     @PreDestroy
     public void release() {
-        log.trace("@PreDestroy: {}", ObjectUtils.identityToString(this));
+        log.debug("APIを解放しました。 => {}", this);
     }
 
     /**
@@ -118,9 +111,14 @@ public class CloudPrintApi {
      * @return 認可コードリクエストURI。
      */
     public URI newAuthCodeReqURI() {
+        log.debug("認可コードリクエストURIを生成します。");
+
         val url = codeFlow.newAuthorizationUrl();
         url.setRedirectUri(apiInfo.getRedirectUri().toString());
-        return url.toURI();
+        val uri = url.toURI();
+
+        log.debug("認可コードリクエストURIを生成しました。 => {}", uri);
+        return uri;
     }
 
     /**
@@ -131,10 +129,14 @@ public class CloudPrintApi {
      * @throws IOException IOエラー。
      */
     public void storeCredential(String userId, String authCode) throws IOException {
+        log.debug("認証情報を取得/保存します。 => userId={}", userId);
+
         val req = codeFlow.newTokenRequest(authCode);
         req.setRedirectUri(apiInfo.getRedirectUri().toString());
         val res = req.execute();
         codeFlow.createAndStoreCredential(res, userId);
+
+        log.debug("認証情報を取得/保存しました。 => userId={}", userId);
     }
 
     /**
@@ -147,6 +149,7 @@ public class CloudPrintApi {
      */
     public <ResType extends CloudPrintApiRes> ResType
     call(String userId, CloudPrintApiReq<ResType> req) throws IOException {
+        log.debug("APIをコールします。 => userId={}, req={}", userId, req);
 
         // 認証情報をロードする
         val credential = codeFlow.loadCredential(userId);
@@ -165,7 +168,10 @@ public class CloudPrintApi {
 
         // HTTPレスポンスをオブジェクトへ変換する
         @Cleanup val httpResContent = httpResEntity.getContent();
-        return new ObjectMapper().readValue(httpResContent, req.getResType());
+        val res = new ObjectMapper().readValue(httpResContent, req.getResType());
+
+        log.debug("APIをコールしました。 => userId={}, res={}", userId, res);
+        return res;
     }
 
 }

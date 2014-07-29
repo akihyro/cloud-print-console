@@ -19,12 +19,14 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * API情報。
  */
 @Data
 @Setter(AccessLevel.PACKAGE)
+@Slf4j
 @XmlRootElement(name = "cloud-print-api")
 public class CloudPrintApiInfo {
 
@@ -118,8 +120,13 @@ public class CloudPrintApiInfo {
      * @throws IOException IOエラー。
      */
     public static CloudPrintApiInfo load() throws IOException {
+        log.debug("API情報をロードします。");
+
         @Cleanup val resource = CloudPrintApiInfo.class.getResourceAsStream("/cloud-print-api-info.xml");
-        return JAXB.unmarshal(resource, CloudPrintApiInfo.class);
+        val apiInfo = JAXB.unmarshal(resource, CloudPrintApiInfo.class);
+
+        log.debug("API情報をロードしました。");
+        return apiInfo;
     }
 
     /** プロキシ情報 */
