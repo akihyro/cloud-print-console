@@ -26,6 +26,14 @@
             </param-value>
         </init-param>
         <init-param>
+            <param-name>jersey.config.server.mediaTypeMappings</param-name>
+            <param-value>
+                html: text/html; charset=utf-8,
+                xml : application/xml; charset=utf-8,
+                json: application/json; charset=utf-8
+            </param-value>
+        </init-param>
+        <init-param>
             <param-name>jersey.config.servlet.filter.forwardOn404</param-name>
             <param-value>true</param-value>
         </init-param>
