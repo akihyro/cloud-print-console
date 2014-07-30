@@ -34,6 +34,10 @@
             </param-value>
         </init-param>
         <init-param>
+            <param-name>jersey.config.server.mvc.templateBasePath</param-name>
+            <param-value>/WEB-INF/templates</param-value>
+        </init-param>
+        <init-param>
             <param-name>jersey.config.servlet.filter.forwardOn404</param-name>
             <param-value>true</param-value>
         </init-param>
@@ -48,7 +52,7 @@
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
             <page-encoding>utf-8</page-encoding>
-            <include-prelude>/_taglib.jsp</include-prelude>
+            <include-prelude>/WEB-INF/templates/_taglib.jsp</include-prelude>
             <trim-directive-whitespaces>true</trim-directive-whitespaces>
         </jsp-property-group>
     </jsp-config>
