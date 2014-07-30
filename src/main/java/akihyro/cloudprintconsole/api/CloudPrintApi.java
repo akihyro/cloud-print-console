@@ -8,6 +8,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 
@@ -161,14 +164,17 @@ public class CloudPrintApi {
                 new BasicHeader("Authorization", "OAuth " + credential.getAccessToken())));
         @Cleanup val httpClient = builder.build();
 
-        // HTTPリクエストを発行し、HTTPレスポンスを得る
+        // HTTPリクエストを発行し、HTTPレスポンスを取得する
         val httpReq = req.toHttpReq(apiInfo);
+        log.debug("HTTPリクエストを発行します。 => {}", httpReq);
         @Cleanup val httpRes = httpClient.execute(httpReq);
         val httpResEntity = httpRes.getEntity();
+        @Cleanup val httpResContent = httpResEntity.getContent();
+        String httpResContentAsString = IOUtils.toString(httpResContent, CharEncoding.UTF_8);
+        log.debug("HTTPレスポンスを取得しました。 => {}", StringUtils.removePattern(httpResContentAsString, "\r|\n"));
 
         // HTTPレスポンスをオブジェクトへ変換する
-        @Cleanup val httpResContent = httpResEntity.getContent();
-        val res = new ObjectMapper().readValue(httpResContent, req.getResType());
+        val res = new ObjectMapper().readValue(httpResContentAsString, req.getResType());
 
         log.debug("APIをコールしました。 => userId={}, res={}", userId, res);
         return res;
