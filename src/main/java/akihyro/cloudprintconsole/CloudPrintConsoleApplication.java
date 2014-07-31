@@ -8,32 +8,26 @@ import javax.ws.rs.core.Application;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * アプリケーション。
+ * Cloud Print Console アプリケーション。
  */
-@ApplicationPath("/")
+@ApplicationPath("")
 @Slf4j
 public class CloudPrintConsoleApplication extends Application {
-
-    /**
-     * コンストラクタ。
-     */
-    public CloudPrintConsoleApplication() {
-    }
 
     /**
      * 初期化する。
      */
     @PostConstruct
     public void init() {
-        log.debug("アプリケーションを初期化しました。 => {}", this);
+        log.info("Cloud Print Console アプリケーションインスタンスを初期化します。 => {}", this);
     }
 
     /**
-     * 解放する。
+     * 終了する。
      */
     @PreDestroy
-    public void release() {
-        log.debug("アプリケーションを解放しました。 => {}", this);
+    public void dispose() {
+        log.info("Cloud Print Console アプリケーションインスタンスを終了します。 => {}", this);
     }
 
 }

@@ -14,9 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 
-import akihyro.cloudprintconsole.api.model.CloudPrintApiReq;
-import akihyro.cloudprintconsole.api.model.CloudPrintApiRes;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.BearerToken;
@@ -32,8 +29,12 @@ import lombok.SneakyThrows;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
+import akihyro.cloudprintconsole.api.models.CloudPrintApiReq;
+import akihyro.cloudprintconsole.api.models.CloudPrintApiRes;
+
 /**
- * API。
+ * Cloud Print API。
+ * 認証処理～APIコールまで担う。
  */
 @ApplicationScoped
 @Slf4j
@@ -53,17 +54,17 @@ public class CloudPrintApi {
     @PostConstruct
     @SneakyThrows
     public void init() {
+        log.info("Cloud Print API インスタンスを初期化します。 => {}", this);
         apiInfo = CloudPrintApiInfo.load();
         codeFlow = newAuthorizationCodeFlow();
-        log.debug("APIを初期化しました。 => {}", this);
     }
 
     /**
-     * 解放する。
+     * 終了する。
      */
     @PreDestroy
-    public void release() {
-        log.debug("APIを解放しました。 => {}", this);
+    public void dispose() {
+        log.info("Cloud Print API インスタンスを終了します。 => {}", this);
     }
 
     /**
@@ -93,7 +94,7 @@ public class CloudPrintApi {
      */
     private NetHttpTransport newNetHttpTransportForAuth() {
         val builder = new NetHttpTransport.Builder();
-        builder.setProxy(apiInfo.takeProxy());
+        builder.setProxy(apiInfo.getProxy());
         return builder.build();
     }
 
@@ -114,13 +115,11 @@ public class CloudPrintApi {
      * @return 認可コードリクエストURI。
      */
     public URI newAuthCodeReqURI() {
-        log.debug("認可コードリクエストURIを生成します。");
-
+        log.info("認可コードリクエストURIを生成します。");
         val url = codeFlow.newAuthorizationUrl();
         url.setRedirectUri(apiInfo.getRedirectUri().toString());
         val uri = url.toURI();
-
-        log.debug("認可コードリクエストURIを生成しました。 => {}", uri);
+        log.info("認可コードリクエストURIを生成しました。 => {}", uri);
         return uri;
     }
 
@@ -132,14 +131,14 @@ public class CloudPrintApi {
      * @throws IOException IOエラー。
      */
     public void storeCredential(String userId, String authCode) throws IOException {
-        log.debug("認証情報を取得/保存します。 => userId={}", userId);
-
+        log.info("認証情報を取得/保存します。 => ユーザID: {}", userId);
+        log.debug("認可コード: {}", authCode);
         val req = codeFlow.newTokenRequest(authCode);
         req.setRedirectUri(apiInfo.getRedirectUri().toString());
         val res = req.execute();
-        codeFlow.createAndStoreCredential(res, userId);
-
-        log.debug("認証情報を取得/保存しました。 => userId={}", userId);
+        val credential = codeFlow.createAndStoreCredential(res, userId);
+        log.info("認証情報を取得/保存しました。");
+        log.debug("認証情報: {}", credential);
     }
 
     /**
@@ -152,14 +151,14 @@ public class CloudPrintApi {
      */
     public <ResType extends CloudPrintApiRes> ResType
     call(String userId, CloudPrintApiReq<ResType> req) throws IOException {
-        log.debug("APIをコールします。 => userId={}, req={}", userId, req);
+        log.info("APIをコールします。 => ユーザID: {}, APIリクエスト: {}", userId, req);
 
         // 認証情報をロードする
         val credential = codeFlow.loadCredential(userId);
 
         // HTTPクライアントを生成する
         val builder = HttpClientBuilder.create();
-        builder.setProxy(apiInfo.takeProxyHttpHost());
+        builder.setProxy(apiInfo.getProxyHttpHost());
         builder.setDefaultHeaders(Arrays.asList(
                 new BasicHeader("Authorization", "OAuth " + credential.getAccessToken())));
         @Cleanup val httpClient = builder.build();
@@ -176,7 +175,7 @@ public class CloudPrintApi {
         // HTTPレスポンスをオブジェクトへ変換する
         val res = new ObjectMapper().readValue(httpResContentAsString, req.getResType());
 
-        log.debug("APIをコールしました。 => userId={}, res={}", userId, res);
+        log.info("APIをコールしました。 => APIレスポンス: {}", res);
         return res;
     }
 

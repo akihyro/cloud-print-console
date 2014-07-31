@@ -1,4 +1,4 @@
 /**
- * Cloud Print Console.
+ * Cloud Print Console。
  */
 package akihyro.cloudprintconsole;

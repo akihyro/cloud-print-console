@@ -19,7 +19,7 @@
     </scopes>
 
     <!-- リダイレクトURI -->
-    <redirect-uri>http://cloud-print-console.net:8080/cloud-print-console/login</redirect-uri>
+    <redirect-uri>http://cloud-print-console.net:8080/cloud-print-console/auth</redirect-uri>
 
     <!-- API URI -->
     <api-uri>https://www.google.com/cloudprint</api-uri>

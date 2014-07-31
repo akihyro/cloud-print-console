@@ -18,16 +18,18 @@ import lombok.Cleanup;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * API情報。
+ * Cloud Print API 情報。
  */
-@Data
-@Setter(AccessLevel.PACKAGE)
-@Slf4j
 @XmlRootElement(name = "cloud-print-api")
+@Data
+@Setter(AccessLevel.PROTECTED)
+@ToString(exclude = { "clientId", "clientSecret" })
+@Slf4j
 public class CloudPrintApiInfo {
 
     /** クライアントID */
@@ -94,7 +96,7 @@ public class CloudPrintApiInfo {
      *
      * @return プロキシ。
      */
-    public Proxy takeProxy() {
+    public Proxy getProxy() {
         if (proxyInfo == null) {
             return null;
         }
@@ -106,7 +108,7 @@ public class CloudPrintApiInfo {
      *
      * @return プロキシHTTPホスト。
      */
-    public HttpHost takeProxyHttpHost() {
+    public HttpHost getProxyHttpHost() {
         if (proxyInfo == null) {
             return null;
         }
@@ -120,19 +122,21 @@ public class CloudPrintApiInfo {
      * @throws IOException IOエラー。
      */
     public static CloudPrintApiInfo load() throws IOException {
-        log.debug("API情報をロードします。");
-
+        log.info("Cloud Print API 情報をロードします。");
         @Cleanup val resource = CloudPrintApiInfo.class.getResourceAsStream("/cloud-print-api-info.xml");
         val apiInfo = JAXB.unmarshal(resource, CloudPrintApiInfo.class);
-
-        log.debug("API情報をロードしました。");
+        log.info("Cloud Print API 情報をロードしました。 => {}", apiInfo);
+        log.debug("Cloud Print API クライアントID: {}", apiInfo.getClientId());
+        log.debug("Cloud Print API クライアントシークレット: {}", apiInfo.getClientSecret());
         return apiInfo;
     }
 
-    /** プロキシ情報 */
-    @Data
-    @Setter(AccessLevel.PACKAGE)
+    /**
+     * Cloud Print API プロキシ情報。
+     */
     @XmlRootElement(name = "proxy")
+    @Data
+    @Setter(AccessLevel.PROTECTED)
     public static class ProxyInfo {
 
         /** ホスト */
