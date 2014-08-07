@@ -5,6 +5,8 @@ import javax.annotation.PreDestroy;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import org.slf4j.bridge.SLF4JBridgeHandler;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -20,6 +22,10 @@ public class CloudPrintConsoleApplication extends Application {
     @PostConstruct
     public void init() {
         log.info("Cloud Print Console アプリケーションインスタンスを初期化します。 => {}", this);
+
+        // SLF4Jブリッジをインストールする
+        SLF4JBridgeHandler.install();
+
     }
 
     /**
@@ -28,6 +34,10 @@ public class CloudPrintConsoleApplication extends Application {
     @PreDestroy
     public void dispose() {
         log.info("Cloud Print Console アプリケーションインスタンスを終了します。 => {}", this);
+
+        // SLF4Jブリッジをアンインストールする
+        SLF4JBridgeHandler.uninstall();
+
     }
 
 }
