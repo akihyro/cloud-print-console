@@ -150,7 +150,7 @@
                     <adminPassword>${glassfish.domain.admin-password}</adminPassword>
                     <autoCreate>true</autoCreate>
                     <debug>true</debug>
-                    <echo>false</echo>
+                    <echo>true</echo>
                     <domain>
                         <name>${glassfish.domain.name}</name>
                         <adminPort>${glassfish.domain.admin-port}</adminPort>
