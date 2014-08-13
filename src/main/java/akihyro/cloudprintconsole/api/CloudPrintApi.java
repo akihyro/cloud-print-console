@@ -24,7 +24,6 @@ import com.google.api.client.json.jackson.JacksonFactory;
 import com.google.api.client.util.store.MemoryDataStoreFactory;
 
 import lombok.Cleanup;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
@@ -41,11 +40,9 @@ import akihyro.cloudprintconsole.api.models.CloudPrintApiResponse;
 public class CloudPrintApi {
 
     /** API情報 */
-    @Getter
     private CloudPrintApiInfo apiInfo;
 
     /** 認証コードフロー */
-    @Getter
     private AuthorizationCodeFlow codeFlow;
 
     /**

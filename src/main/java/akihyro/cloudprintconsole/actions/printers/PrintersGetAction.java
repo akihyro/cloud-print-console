@@ -32,11 +32,11 @@ public class PrintersGetAction {
 
     /** API */
     @Inject
-    protected CloudPrintApi api;
+    private CloudPrintApi api;
 
     /** ユーザ情報 */
     @Inject
-    protected UserInfo userInfo;
+    private UserInfo userInfo;
 
     /**
      * 初期化する。

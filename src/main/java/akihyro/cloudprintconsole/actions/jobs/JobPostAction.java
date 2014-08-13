@@ -30,11 +30,11 @@ public class JobPostAction {
 
     /** API */
     @Inject
-    CloudPrintApi api;
+    private CloudPrintApi api;
 
     /** ユーザ情報 */
     @Inject
-    protected UserInfo userInfo;
+    private UserInfo userInfo;
 
     /**
      * 初期化する。

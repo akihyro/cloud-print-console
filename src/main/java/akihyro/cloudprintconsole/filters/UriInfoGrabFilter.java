@@ -27,7 +27,7 @@ public class UriInfoGrabFilter implements ContainerRequestFilter {
 
     /** URI情報 */
     @Inject
-    protected UriInfo uriInfo;
+    private UriInfo uriInfo;
 
     /**
      * 初期化する。
