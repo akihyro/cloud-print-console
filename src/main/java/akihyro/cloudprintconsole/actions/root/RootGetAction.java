@@ -25,7 +25,7 @@ public class RootGetAction {
      */
     @PostConstruct
     public void init() {
-        log.info("ルートGETアクションインスタンスを初期化します。 => {}", this);
+        log.info("ルートGETアクションを初期化します。 => {}", this);
     }
 
     /**
@@ -33,7 +33,7 @@ public class RootGetAction {
      */
     @PreDestroy
     public void dispose() {
-        log.info("ルートGETアクションインスタンスを終了します。 => {}", this);
+        log.info("ルートGETアクションを終了します。 => {}", this);
     }
 
     /**

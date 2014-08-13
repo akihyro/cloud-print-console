@@ -43,7 +43,7 @@ public class PrintersGetAction {
      */
     @PostConstruct
     public void init() {
-        log.info("プリンタリストGETアクションインスタンスを初期化します。 => {}", this);
+        log.info("プリンタリストGETアクションを初期化します。 => {}", this);
     }
 
     /**
@@ -51,7 +51,7 @@ public class PrintersGetAction {
      */
     @PreDestroy
     public void dispose() {
-        log.info("プリンタリストGETアクションインスタンスを終了します。 => {}", this);
+        log.info("プリンタリストGETアクションを終了します。 => {}", this);
     }
 
     /**

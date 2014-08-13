@@ -37,7 +37,7 @@ public class AuthGetAction {
      */
     @PostConstruct
     public void init() {
-        log.info("認証GETアクションのインスタンスを初期化します。 => {}", this);
+        log.info("認証GETアクションを初期化します。 => {}", this);
     }
 
     /**
@@ -45,7 +45,7 @@ public class AuthGetAction {
      */
     @PreDestroy
     public void dispose() {
-        log.info("認証GETアクションのインスタンスを終了します。 => {}", this);
+        log.info("認証GETアクションを終了します。 => {}", this);
     }
 
     /**

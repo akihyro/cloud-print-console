@@ -21,7 +21,7 @@ public class CloudPrintConsoleApplication extends Application {
      */
     @PostConstruct
     public void init() {
-        log.info("Cloud Print Console アプリケーションインスタンスを初期化します。 => {}", this);
+        log.info("Cloud Print Console アプリケーションを初期化します。 => {}", this);
 
         // SLF4Jブリッジをインストールする
         SLF4JBridgeHandler.install();
@@ -33,7 +33,7 @@ public class CloudPrintConsoleApplication extends Application {
      */
     @PreDestroy
     public void dispose() {
-        log.info("Cloud Print Console アプリケーションインスタンスを終了します。 => {}", this);
+        log.info("Cloud Print Console アプリケーションを終了します。 => {}", this);
 
         // SLF4Jブリッジをアンインストールする
         SLF4JBridgeHandler.uninstall();

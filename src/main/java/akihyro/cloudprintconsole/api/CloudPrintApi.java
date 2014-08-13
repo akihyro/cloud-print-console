@@ -54,7 +54,7 @@ public class CloudPrintApi {
     @PostConstruct
     @SneakyThrows
     public void init() {
-        log.info("Cloud Print API インスタンスを初期化します。 => {}", this);
+        log.info("Cloud Print API を初期化します。 => {}", this);
         apiInfo = CloudPrintApiInfo.load();
         codeFlow = newAuthorizationCodeFlow();
     }
@@ -64,7 +64,7 @@ public class CloudPrintApi {
      */
     @PreDestroy
     public void dispose() {
-        log.info("Cloud Print API インスタンスを終了します。 => {}", this);
+        log.info("Cloud Print API を終了します。 => {}", this);
     }
 
     /**

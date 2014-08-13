@@ -5,7 +5,7 @@ import javax.ws.rs.QueryParam;
 import lombok.Data;
 
 /**
- * ジョブ登録GETアクションリクエスト。
+ * ジョブ登録情報GETアクションリクエスト。
  */
 @Data
 public class NewJobGetActionReq {

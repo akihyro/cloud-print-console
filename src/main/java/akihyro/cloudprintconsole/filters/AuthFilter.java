@@ -59,7 +59,7 @@ public class AuthFilter implements ContainerRequestFilter {
      */
     @PostConstruct
     public void init() {
-        log.info("認証フィルタインスタンスを初期化します。 => {}", this);
+        log.info("認証フィルタを初期化します。 => {}", this);
     }
 
     /**
@@ -67,7 +67,7 @@ public class AuthFilter implements ContainerRequestFilter {
      */
     @PreDestroy
     public void dispose() {
-        log.info("認証フィルタインスタンスを終了します。 => {}", this);
+        log.info("認証フィルタを終了します。 => {}", this);
     }
 
     /**

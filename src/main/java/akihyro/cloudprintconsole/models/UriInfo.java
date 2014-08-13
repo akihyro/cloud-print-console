@@ -10,8 +10,13 @@ import javax.inject.Named;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import akihyro.cloudprintconsole.filters.UriInfoGrabFilter;
+
 /**
  * URI情報。
+ * {@link javax.ws.rs.core.UriInfo} をラップしたもの。
+ * {@link javax.ws.rs.core.UriInfo} は {@link UriInfoGrabFilter} で捕捉する。
+ * URI情報の参照をJSPからも可能にする為、リクエストスコープに保存する。
  */
 @Named
 @RequestScoped
@@ -27,7 +32,7 @@ public class UriInfo {
      */
     @PostConstruct
     public void init() {
-        log.info("URI情報インスタンスを初期化します。 => {}", this);
+        log.info("URI情報を初期化します。 => {}", this);
     }
 
     /**
@@ -35,7 +40,7 @@ public class UriInfo {
      */
     @PreDestroy
     public void dispose() {
-        log.info("URI情報インスタンスを終了します。 => {}", this);
+        log.info("URI情報を終了します。 => {}", this);
     }
 
     /**

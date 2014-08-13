@@ -18,7 +18,7 @@ import akihyro.cloudprintconsole.actions.jobs.models.NewJobGetActionReq;
 import akihyro.cloudprintconsole.actions.jobs.models.NewJobGetActionRes;
 
 /**
- * ジョブ登録GETアクション。
+ * ジョブ登録情報GETアクション。
  */
 @ApplicationScoped
 @Path("jobs/new")
@@ -30,7 +30,7 @@ public class NewJobGetAction {
      */
     @PostConstruct
     public void init() {
-        log.info("ジョブ登録GETアクションインスタンスを初期化します。 => {}", this);
+        log.info("ジョブ登録情報GETアクションを初期化します。 => {}", this);
     }
 
     /**
@@ -38,7 +38,7 @@ public class NewJobGetAction {
      */
     @PreDestroy
     public void dispose() {
-        log.info("ジョブ登録GETアクションインスタンスを終了します。 => {}", this);
+        log.info("ジョブ登録情報GETアクションを終了します。 => {}", this);
     }
 
     /**

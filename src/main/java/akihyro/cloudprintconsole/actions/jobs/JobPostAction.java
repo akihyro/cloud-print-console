@@ -41,7 +41,7 @@ public class JobPostAction {
      */
     @PostConstruct
     public void init() {
-        log.info("ジョブPOSTアクションインスタンスを初期化します。 => {}", this);
+        log.info("ジョブPOSTアクションを初期化します。 => {}", this);
     }
 
     /**
@@ -49,7 +49,7 @@ public class JobPostAction {
      */
     @PreDestroy
     public void dispose() {
-        log.info("ジョブPOSTアクションインスタンスを終了します。 => {}", this);
+        log.info("ジョブPOSTアクションを終了します。 => {}", this);
     }
 
     /**

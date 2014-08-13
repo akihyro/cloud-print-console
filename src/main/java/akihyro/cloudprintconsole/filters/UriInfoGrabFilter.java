@@ -34,7 +34,7 @@ public class UriInfoGrabFilter implements ContainerRequestFilter {
      */
     @PostConstruct
     public void init() {
-        log.info("URI情報捕捉フィルタインスタンスを初期化します。 => {}", this);
+        log.info("URI情報捕捉フィルタを初期化します。 => {}", this);
     }
 
     /**
@@ -42,7 +42,7 @@ public class UriInfoGrabFilter implements ContainerRequestFilter {
      */
     @PreDestroy
     public void dispose() {
-        log.info("URI情報捕捉フィルタインスタンスを終了します。 => {}", this);
+        log.info("URI情報捕捉フィルタを終了します。 => {}", this);
     }
 
     /**

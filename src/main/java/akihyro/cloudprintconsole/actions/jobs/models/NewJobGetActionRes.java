@@ -3,7 +3,7 @@ package akihyro.cloudprintconsole.actions.jobs.models;
 import lombok.Data;
 
 /**
- * ジョブ登録GETアクションレスポンス。
+ * ジョブ登録情報GETアクションレスポンス。
  */
 @Data
 public class NewJobGetActionRes {

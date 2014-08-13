@@ -29,7 +29,7 @@ public class UserInfo implements Serializable {
      */
     @PostConstruct
     public void init() {
-        log.info("ユーザ情報インスタンスを初期化します。 => {}", this);
+        log.info("ユーザ情報を初期化します。 => {}", this);
 
         // 取り敢えずセッション単位で異なるユーザと見なしとく
         id = Integer.toHexString(System.identityHashCode(this));
@@ -41,7 +41,7 @@ public class UserInfo implements Serializable {
      */
     @PreDestroy
     public void dispose() {
-        log.info("ユーザ情報インスタンスを終了します。 => {}", this);
+        log.info("ユーザ情報を終了します。 => {}", this);
     }
 
 }
