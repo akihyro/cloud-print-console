@@ -8,7 +8,7 @@ import lombok.Data;
  * ジョブ登録情報GETアクションリクエスト。
  */
 @Data
-public class NewJobGetActionReq {
+public class NewJobGetActionRequest {
 
     /** プリンタID */
     @QueryParam("printer-id")

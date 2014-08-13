@@ -3,6 +3,6 @@ package akihyro.cloudprintconsole.api.models;
 /**
  * Cloud Print API レスポンス。
  */
-public interface CloudPrintApiRes {
+public interface CloudPrintApiResponse {
 
 }

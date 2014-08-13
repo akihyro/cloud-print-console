@@ -16,7 +16,7 @@ import akihyro.cloudprintconsole.api.CloudPrintApiInfo;
  * サブミットAPIリクエスト。
  */
 @Data
-public class CloudPrintApiSubmitReq implements CloudPrintApiReq<CloudPrintApiSubmitRes> {
+public class CloudPrintApiSubmitRequest implements CloudPrintApiRequest<CloudPrintApiSubmitResponse> {
 
     /** プリンタID */
     private String printerId;
@@ -46,8 +46,8 @@ public class CloudPrintApiSubmitReq implements CloudPrintApiReq<CloudPrintApiSub
      * @return レスポンスクラス。
      */
     @Override
-    public Class<CloudPrintApiSubmitRes> getResType() {
-        return CloudPrintApiSubmitRes.class;
+    public Class<CloudPrintApiSubmitResponse> getResponseType() {
+        return CloudPrintApiSubmitResponse.class;
     }
 
     /**
@@ -57,7 +57,7 @@ public class CloudPrintApiSubmitReq implements CloudPrintApiReq<CloudPrintApiSub
      * @return HTTPリクエスト。
      */
     @Override
-    public HttpUriRequest toHttpReq(CloudPrintApiInfo apiInfo) {
+    public HttpUriRequest toHttpRequest(CloudPrintApiInfo apiInfo) {
         val builder = RequestBuilder.post();
         builder.setUri(apiInfo.getApiUri(getInterfaceName()));
         builder.setEntity(toHttpEntity());

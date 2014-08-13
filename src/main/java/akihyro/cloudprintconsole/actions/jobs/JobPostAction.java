@@ -15,9 +15,9 @@ import org.glassfish.jersey.server.mvc.Template;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
-import akihyro.cloudprintconsole.actions.jobs.models.JobPostActionReq;
+import akihyro.cloudprintconsole.actions.jobs.models.JobPostActionRequest;
 import akihyro.cloudprintconsole.api.CloudPrintApi;
-import akihyro.cloudprintconsole.api.models.CloudPrintApiSubmitReq;
+import akihyro.cloudprintconsole.api.models.CloudPrintApiSubmitRequest;
 import akihyro.cloudprintconsole.models.UserInfo;
 
 /**
@@ -55,20 +55,20 @@ public class JobPostAction {
     /**
      * ジョブを登録する。
      *
-     * @param req リクエスト。
+     * @param request リクエスト。
      * @return ジョブ登録結果ページ。
      * @throws Exception エラー。
      */
     @POST
     @Produces(MediaType.TEXT_HTML)
     @Template(name = "/jobs/posted.html.jsp")
-    public String getAsHtml(@BeanParam JobPostActionReq req) throws Exception {
-        val apiReq = new CloudPrintApiSubmitReq();
-        apiReq.setPrinterId(req.getPrinterId());
-        apiReq.setTitle(req.getTitle());
-        apiReq.setContentType(req.getContentType());
-        apiReq.setContent(req.getContent());
-        return api.call(userInfo.getId(), apiReq).toString();
+    public String getAsHtml(@BeanParam JobPostActionRequest request) throws Exception {
+        val apiRequest = new CloudPrintApiSubmitRequest();
+        apiRequest.setPrinterId(request.getPrinterId());
+        apiRequest.setTitle(request.getTitle());
+        apiRequest.setContentType(request.getContentType());
+        apiRequest.setContent(request.getContent());
+        return api.call(userInfo.getId(), apiRequest).toString();
     }
 
 }

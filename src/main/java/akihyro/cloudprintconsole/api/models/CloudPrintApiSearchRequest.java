@@ -12,7 +12,7 @@ import akihyro.cloudprintconsole.api.CloudPrintApiInfo;
  * プリンタ検索APIリクエスト。
  */
 @Data
-public class CloudPrintApiSearchReq implements CloudPrintApiReq<CloudPrintApiSearchRes> {
+public class CloudPrintApiSearchRequest implements CloudPrintApiRequest<CloudPrintApiSearchResponse> {
 
     /** クエリ */
     private String query;
@@ -33,8 +33,8 @@ public class CloudPrintApiSearchReq implements CloudPrintApiReq<CloudPrintApiSea
      * @return レスポンスクラス。
      */
     @Override
-    public Class<CloudPrintApiSearchRes> getResType() {
-        return CloudPrintApiSearchRes.class;
+    public Class<CloudPrintApiSearchResponse> getResponseType() {
+        return CloudPrintApiSearchResponse.class;
     }
 
     /**
@@ -44,7 +44,7 @@ public class CloudPrintApiSearchReq implements CloudPrintApiReq<CloudPrintApiSea
      * @return HTTPリクエスト。
      */
     @Override
-    public HttpUriRequest toHttpReq(CloudPrintApiInfo apiInfo) {
+    public HttpUriRequest toHttpRequest(CloudPrintApiInfo apiInfo) {
         val builder = RequestBuilder.post();
         builder.setUri(apiInfo.getApiUri(getInterfaceName()));
         builder.addParameter("q", query);

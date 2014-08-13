@@ -8,7 +8,7 @@ import lombok.Data;
  * 認証GETアクションリクエスト。
  */
 @Data
-public class AuthGetActionReq {
+public class AuthGetActionRequest {
 
     /** 認可コード */
     @QueryParam("code")

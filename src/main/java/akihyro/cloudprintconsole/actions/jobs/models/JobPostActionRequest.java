@@ -10,7 +10,7 @@ import lombok.Data;
  * ジョブPOSTアクションリクエスト。
  */
 @Data
-public class JobPostActionReq {
+public class JobPostActionRequest {
 
     /** プリンタID */
     @FormDataParam("printer-id")

@@ -106,10 +106,10 @@ public class AuthFilter implements ContainerRequestFilter {
         log.info("認証後のリダイレクトURIを保存しました。 => {}", userInfo.getRedirectUriForAuth());
 
         // 認証用URIへリダイレクトする
-        val uri = api.newAuthCodeReqURI();
+        val uri = api.newAuthCodeRequestUri();
         log.info("認証用URIへリダイレクトします。 => {}", uri);
-        val res = Response.seeOther(uri).build();
-        context.abortWith(res);
+        val response = Response.seeOther(uri).build();
+        context.abortWith(response);
 
     }
 

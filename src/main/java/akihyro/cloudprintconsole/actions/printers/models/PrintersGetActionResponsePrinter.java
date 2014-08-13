@@ -6,7 +6,7 @@ import lombok.Data;
  * プリンタリストGETアクションレスポンス：プリンタ。
  */
 @Data
-public class PrintersGetActionResPrinter {
+public class PrintersGetActionResponsePrinter {
 
     /** ID */
     private String id;

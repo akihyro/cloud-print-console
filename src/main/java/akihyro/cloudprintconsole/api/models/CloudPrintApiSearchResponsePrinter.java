@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CloudPrintApiSearchResPrinter {
+public class CloudPrintApiSearchResponsePrinter {
 
     /** ID */
     @JsonProperty("id")

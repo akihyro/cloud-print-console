@@ -7,9 +7,9 @@ import akihyro.cloudprintconsole.api.CloudPrintApiInfo;
 /**
  * Cloud Print API リクエスト。
  *
- * @param <ResType> レスポンスクラス。
+ * @param <ResponseType> レスポンスクラス。
  */
-public interface CloudPrintApiReq<ResType extends CloudPrintApiRes> {
+public interface CloudPrintApiRequest<ResponseType extends CloudPrintApiResponse> {
 
     /**
      * インターフェイス名を取得する。
@@ -23,7 +23,7 @@ public interface CloudPrintApiReq<ResType extends CloudPrintApiRes> {
      *
      * @return レスポンスクラス。
      */
-    public Class<ResType> getResType();
+    public Class<ResponseType> getResponseType();
 
     /**
      * HTTPリクエストに変換する。
@@ -31,6 +31,6 @@ public interface CloudPrintApiReq<ResType extends CloudPrintApiRes> {
      * @param apiInfo API情報。
      * @return HTTPリクエスト。
      */
-    public HttpUriRequest toHttpReq(CloudPrintApiInfo apiInfo);
+    public HttpUriRequest toHttpRequest(CloudPrintApiInfo apiInfo);
 
 }

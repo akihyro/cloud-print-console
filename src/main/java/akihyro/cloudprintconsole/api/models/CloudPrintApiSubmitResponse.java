@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CloudPrintApiSubmitRes implements CloudPrintApiRes {
+public class CloudPrintApiSubmitResponse implements CloudPrintApiResponse {
 
     /** 結果 */
     @JsonProperty("success")

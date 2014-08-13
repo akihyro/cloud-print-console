@@ -6,7 +6,7 @@ import lombok.Data;
  * ジョブ登録情報GETアクションレスポンス。
  */
 @Data
-public class NewJobGetActionRes {
+public class NewJobGetActionResponse {
 
     /** プリンタID */
     private String printerId;

@@ -16,10 +16,10 @@ import org.glassfish.jersey.server.mvc.Template;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
-import akihyro.cloudprintconsole.actions.printers.models.PrintersGetActionRes;
-import akihyro.cloudprintconsole.actions.printers.models.PrintersGetActionResPrinter;
+import akihyro.cloudprintconsole.actions.printers.models.PrintersGetActionResponse;
+import akihyro.cloudprintconsole.actions.printers.models.PrintersGetActionResponsePrinter;
 import akihyro.cloudprintconsole.api.CloudPrintApi;
-import akihyro.cloudprintconsole.api.models.CloudPrintApiSearchReq;
+import akihyro.cloudprintconsole.api.models.CloudPrintApiSearchRequest;
 import akihyro.cloudprintconsole.models.UserInfo;
 
 /**
@@ -63,15 +63,15 @@ public class PrintersGetAction {
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Template(name = "/printers/printers.html.jsp")
-    public PrintersGetActionRes getAsHtml() throws Exception {
+    public PrintersGetActionResponse getAsHtml() throws Exception {
 
         // プリンタリストを取得する
         log.info("プリンタリストを取得します。");
-        val apiReq = new CloudPrintApiSearchReq();
-        val apiRes = api.call(userInfo.getId(), apiReq);
-        val printers = new ArrayList<PrintersGetActionResPrinter>(apiRes.getPrinters().size());
-        for (val apiPrinter : apiRes.getPrinters()) {
-            val printer = new PrintersGetActionResPrinter();
+        val apiRequest = new CloudPrintApiSearchRequest();
+        val apiResponse = api.call(userInfo.getId(), apiRequest);
+        val printers = new ArrayList<PrintersGetActionResponsePrinter>(apiResponse.getPrinters().size());
+        for (val apiPrinter : apiResponse.getPrinters()) {
+            val printer = new PrintersGetActionResponsePrinter();
             printer.setId(apiPrinter.getId());
             printer.setName(apiPrinter.getName());
             printer.setDisplayName(apiPrinter.getDisplayName());
@@ -79,10 +79,10 @@ public class PrintersGetAction {
             printer.setConnectionStatus(apiPrinter.getConnectionStatus());
             printers.add(printer);
         }
-        val res = new PrintersGetActionRes();
-        res.setPrinters(printers);
+        val response = new PrintersGetActionResponse();
+        response.setPrinters(printers);
 
-        return res;
+        return response;
     }
 
 }

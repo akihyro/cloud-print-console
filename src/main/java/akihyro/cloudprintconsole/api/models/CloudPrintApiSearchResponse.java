@@ -12,10 +12,10 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CloudPrintApiSearchRes implements CloudPrintApiRes {
+public class CloudPrintApiSearchResponse implements CloudPrintApiResponse {
 
     /** プリンタリスト */
     @JsonProperty("printers")
-    private List<CloudPrintApiSearchResPrinter> printers;
+    private List<CloudPrintApiSearchResponsePrinter> printers;
 
 }

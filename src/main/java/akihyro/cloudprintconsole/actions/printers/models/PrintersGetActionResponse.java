@@ -8,9 +8,9 @@ import lombok.Data;
  * プリンタリストGETアクションレスポンス。
  */
 @Data
-public class PrintersGetActionRes {
+public class PrintersGetActionResponse {
 
     /** プリンタリスト */
-    private List<PrintersGetActionResPrinter> printers;
+    private List<PrintersGetActionResponsePrinter> printers;
 
 }

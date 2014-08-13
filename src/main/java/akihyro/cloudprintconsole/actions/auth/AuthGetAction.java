@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
-import akihyro.cloudprintconsole.actions.auth.models.AuthGetActionReq;
+import akihyro.cloudprintconsole.actions.auth.models.AuthGetActionRequest;
 import akihyro.cloudprintconsole.api.CloudPrintApi;
 import akihyro.cloudprintconsole.models.UserInfo;
 
@@ -51,16 +51,16 @@ public class AuthGetAction {
     /**
      * 認証する。
      *
-     * @param req リクエスト。
+     * @param request リクエスト。
      * @return リダイレクト。
      * @throws Exception エラー。
      */
     @GET
-    public Response get(@BeanParam AuthGetActionReq req) throws Exception {
+    public Response get(@BeanParam AuthGetActionRequest request) throws Exception {
 
         // 未認証なら認証情報を取得/保存する
         if (!api.hasCredential(userInfo.getId())) {
-            api.storeCredential(userInfo.getId(), req.getAuthCode());
+            api.storeCredential(userInfo.getId(), request.getAuthCode());
         }
 
         // リダイレクトする

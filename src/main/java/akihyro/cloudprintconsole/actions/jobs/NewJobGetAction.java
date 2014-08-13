@@ -14,8 +14,8 @@ import org.glassfish.jersey.server.mvc.Template;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
-import akihyro.cloudprintconsole.actions.jobs.models.NewJobGetActionReq;
-import akihyro.cloudprintconsole.actions.jobs.models.NewJobGetActionRes;
+import akihyro.cloudprintconsole.actions.jobs.models.NewJobGetActionRequest;
+import akihyro.cloudprintconsole.actions.jobs.models.NewJobGetActionResponse;
 
 /**
  * ジョブ登録情報GETアクション。
@@ -44,17 +44,17 @@ public class NewJobGetAction {
     /**
      * ジョブ登録ページを取得する。
      *
-     * @param req リクエスト。
+     * @param request リクエスト。
      * @return ジョブ登録ページ。
      * @throws Exception エラー。
      */
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Template(name = "/jobs/new.html.jsp")
-    public NewJobGetActionRes getAsHtml(@BeanParam NewJobGetActionReq req) throws Exception {
-        val res = new NewJobGetActionRes();
-        res.setPrinterId(req.getPrinterId());
-        return res;
+    public NewJobGetActionResponse getAsHtml(@BeanParam NewJobGetActionRequest request) throws Exception {
+        val response = new NewJobGetActionResponse();
+        response.setPrinterId(request.getPrinterId());
+        return response;
     }
 
 }

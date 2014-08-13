@@ -29,8 +29,8 @@ import lombok.SneakyThrows;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
-import akihyro.cloudprintconsole.api.models.CloudPrintApiReq;
-import akihyro.cloudprintconsole.api.models.CloudPrintApiRes;
+import akihyro.cloudprintconsole.api.models.CloudPrintApiRequest;
+import akihyro.cloudprintconsole.api.models.CloudPrintApiResponse;
 
 /**
  * Cloud Print API。
@@ -114,7 +114,7 @@ public class CloudPrintApi {
      *
      * @return 認可コードリクエストURI。
      */
-    public URI newAuthCodeReqURI() {
+    public URI newAuthCodeRequestUri() {
         log.info("認可コードリクエストURIを生成します。");
         val url = codeFlow.newAuthorizationUrl();
         url.setRedirectUri(apiInfo.getRedirectUri().toString());
@@ -133,10 +133,10 @@ public class CloudPrintApi {
     public void storeCredential(String userId, String authCode) throws IOException {
         log.info("認証情報を取得/保存します。 => ユーザID: {}", userId);
         log.debug("認可コード: {}", authCode);
-        val req = codeFlow.newTokenRequest(authCode);
-        req.setRedirectUri(apiInfo.getRedirectUri().toString());
-        val res = req.execute();
-        val credential = codeFlow.createAndStoreCredential(res, userId);
+        val request = codeFlow.newTokenRequest(authCode);
+        request.setRedirectUri(apiInfo.getRedirectUri().toString());
+        val response = request.execute();
+        val credential = codeFlow.createAndStoreCredential(response, userId);
         log.info("認証情報を取得/保存しました。");
         log.debug("認証情報: {}", credential);
     }
@@ -145,13 +145,13 @@ public class CloudPrintApi {
      * APIをコールする。
      *
      * @param userId ユーザID。
-     * @param req APIリクエスト。
+     * @param request APIリクエスト。
      * @return APIレスポンス。
      * @throws IOException IOエラー。
      */
-    public <ResType extends CloudPrintApiRes> ResType
-    call(String userId, CloudPrintApiReq<ResType> req) throws IOException {
-        log.info("APIをコールします。 => ユーザID: {}, APIリクエスト: {}", userId, req);
+    public <ResType extends CloudPrintApiResponse> ResType
+    call(String userId, CloudPrintApiRequest<ResType> request) throws IOException {
+        log.info("APIをコールします。 => ユーザID: {}, APIリクエスト: {}", userId, request);
 
         // 認証情報をロードする
         val credential = codeFlow.loadCredential(userId);
@@ -164,19 +164,20 @@ public class CloudPrintApi {
         @Cleanup val httpClient = builder.build();
 
         // HTTPリクエストを発行し、HTTPレスポンスを取得する
-        val httpReq = req.toHttpReq(apiInfo);
-        log.debug("HTTPリクエストを発行します。 => {}", httpReq);
-        @Cleanup val httpRes = httpClient.execute(httpReq);
-        val httpResEntity = httpRes.getEntity();
-        @Cleanup val httpResContent = httpResEntity.getContent();
-        String httpResContentAsString = IOUtils.toString(httpResContent, CharEncoding.UTF_8);
-        log.debug("HTTPレスポンスを取得しました。 => {}", StringUtils.removePattern(httpResContentAsString, "\r|\n"));
+        val httpRequest = request.toHttpRequest(apiInfo);
+        log.debug("HTTPリクエストを発行します。 => {}", httpRequest);
+        @Cleanup val httpResponse = httpClient.execute(httpRequest);
+        val httpResponseEntity = httpResponse.getEntity();
+        @Cleanup val httpResponseContent = httpResponseEntity.getContent();
+        String httpResponseContentAsString = IOUtils.toString(httpResponseContent, CharEncoding.UTF_8);
+        log.debug("HTTPレスポンスを取得しました。 => {}",
+                StringUtils.removePattern(httpResponseContentAsString, "\r|\n"));
 
         // HTTPレスポンスをオブジェクトへ変換する
-        val res = new ObjectMapper().readValue(httpResContentAsString, req.getResType());
+        val response = new ObjectMapper().readValue(httpResponseContentAsString, request.getResponseType());
 
-        log.info("APIをコールしました。 => APIレスポンス: {}", res);
-        return res;
+        log.info("APIをコールしました。 => APIレスポンス: {}", response);
+        return response;
     }
 
 }
