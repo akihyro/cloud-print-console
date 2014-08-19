@@ -4,6 +4,8 @@ import javax.ws.rs.QueryParam;
 
 import lombok.Data;
 
+import akihyro.cloudprintconsole.validation.constraints.PrinterId;
+
 /**
  * ジョブ登録情報GETアクションリクエスト。
  */
@@ -11,6 +13,7 @@ import lombok.Data;
 public class NewJobGetActionRequest {
 
     /** プリンタID */
+    @PrinterId
     @QueryParam("printer-id")
     private String printerId;
 

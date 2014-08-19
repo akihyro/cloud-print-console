@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -62,7 +63,7 @@ public class JobPostAction {
     @POST
     @Produces(MediaType.TEXT_HTML)
     @Template(name = "/jobs/posted.html.jsp")
-    public String getAsHtml(@BeanParam JobPostActionRequest request) throws Exception {
+    public String getAsHtml(@Valid @BeanParam JobPostActionRequest request) throws Exception {
         val apiRequest = new CloudPrintApiSubmitRequest();
         apiRequest.setPrinterId(request.getPrinterId());
         apiRequest.setTitle(request.getTitle());

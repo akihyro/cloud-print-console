@@ -3,6 +3,7 @@ package akihyro.cloudprintconsole.actions.jobs;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.validation.Valid;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -51,7 +52,7 @@ public class NewJobGetAction {
     @GET
     @Produces(MediaType.TEXT_HTML)
     @Template(name = "/jobs/new.html.jsp")
-    public NewJobGetActionResponse getAsHtml(@BeanParam NewJobGetActionRequest request) throws Exception {
+    public NewJobGetActionResponse getAsHtml(@Valid @BeanParam NewJobGetActionRequest request) throws Exception {
         val response = new NewJobGetActionResponse();
         response.setPrinterId(request.getPrinterId());
         return response;

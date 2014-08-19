@@ -68,6 +68,11 @@ public class CloudPrintConsoleApplication extends ResourceConfig {
     private void setupProperties() {
         log.info("アプリケーションのプロパティを設定します。");
 
+        // JerseyのBeanValidationサポートを無効にする
+        // ※理由1.バリデーションが二重で実行されてしまう。
+        // ※理由2.@Injectが効かない。
+        property(ServerProperties.BV_FEATURE_DISABLE, true);
+
         // URIの拡張子によってレスポンスのメディアタイプを決める
         property(ServerProperties.MEDIA_TYPE_MAPPINGS, getMediaTypeMappings());
 
