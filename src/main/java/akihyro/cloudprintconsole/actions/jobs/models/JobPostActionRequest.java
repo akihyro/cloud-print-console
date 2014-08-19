@@ -24,6 +24,7 @@ public class JobPostActionRequest {
     @FormDataParam("content-type")
     private String contentType;
 
+    /** コンテンツ */
     @FormDataParam("content")
     private InputStream content;
 
