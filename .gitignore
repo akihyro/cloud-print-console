@@ -1,8 +1,8 @@
 /.classpath
 /.project
 /.settings
-/glassfish-domain
+/glassfish-domain/
 /log/*.log
 /log/*.log.gz
 /src/main/resources/cloud-print-api-info.xml
-/target
+/target/
